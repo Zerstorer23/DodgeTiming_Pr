@@ -1,0 +1,22 @@
+
+LexMessage
+
+RPC
+    actorNum, RPC [int]viewID [string]FunctionName [object[...]]params
+
+SyncVar
+    actorNum, SyncVar [int]viewID  [object[,,,]] params
+
+Chat
+    actorNum, Chat [string]chat message (needs cleansing)
+
+Instantiate
+    actorNum, Instantiate [int]viewID [string]prefabName [flaot,float,float] position [float,float,float]quarternion [object[...]] params
+
+Destroy
+    actorNum, Destroy [int]viewID
+
+Hash
+    actorNum, SetHash [int]roomOrPlayer [int]count [string]Key [string] type [object]value
+
+
