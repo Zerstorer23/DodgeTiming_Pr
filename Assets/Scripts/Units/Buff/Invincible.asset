@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c088daaef860dc4481f5966b10f44bc, type: 3}
+  m_Name: Invincible
+  m_EditorClassIdentifier: 
+  buffType: 4
+  modifier: -1
+  duration: 4
+  triggerByID: 
+  buff_name: "\uBB34\uC8014\uCD08"
+  spriteImage: {fileID: 21300000, guid: 3321fef168404b24fa9117251341b701, type: 3}

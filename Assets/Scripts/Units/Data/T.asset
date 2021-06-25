@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90c68fbdaad312e49bb2b023b12463e2, type: 3}
+  m_Name: T
+  m_EditorClassIdentifier: 
+  characterID: 16
+  txt_name: T
+  noRandom: 0
+  txt_skill_desc: "\uC720\uB3C4\uB2A5\uB825\uC774 \uC788\uB294 \uCE74\uB4DC\uB97C
+    \uBC1C\uC0AC. \uCE74\uB4DC\uB294 3\uD68C\uAE4C\uC9C0 \uC720\uB3C4\uACF5\uACA9\uC774
+    \uAC00\uB2A5\uD558\uBA70 \uC911\uAC04\uC5D0 \uACF5\uACA9\uBC1B\uC73C\uBA74 \uC720\uB3C4
+    \uD69F\uC218\uAC00 \uAC10\uC18C\uD569\uB2C8\uB2E4."
+  portraitImage: {fileID: 21300000, guid: 07fe126ff12ea944c85b60363ff58089, type: 3}

@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90c68fbdaad312e49bb2b023b12463e2, type: 3}
+  m_Name: Kuyou
+  m_EditorClassIdentifier: 
+  characterID: 5
+  txt_name: "\uCFE0\uC694\uC6B0"
+  noRandom: 0
+  txt_skill_desc: "\uC804\uBC29\uC5D0 \uBE73\uB530\uB97C \uD718\uB458\uB7EC \uD53C\uD574\uB97C
+    \uC785\uD799\uB2C8\uB2E4."
+  portraitImage: {fileID: 21300000, guid: f8f4be4d9f1b44a44a9860fb56b9b8e3, type: 3}

@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 323efd30686991d4faff2622ed40d62a, type: 3}
+  m_Name: Team
+  m_EditorClassIdentifier: 
+  gameMode: 1
+  callSuddenDeath: 1
+  useDesolator: 1
+  scaleMapByPlayerNum: 1
+  isTeamGame: 1
+  isCoop: 0
+  allowBots: 1
