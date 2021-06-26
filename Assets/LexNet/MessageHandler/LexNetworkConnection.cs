@@ -53,8 +53,7 @@
             }
             catch (Exception e)
             {
-                Debug.Log(e.Message);
-                Debug.Log(e.StackTrace);
+                Debug.Log(e);
                 return false;
             }
             Debug.Log("Connection made!");

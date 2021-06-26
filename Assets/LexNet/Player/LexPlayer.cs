@@ -190,9 +190,11 @@ namespace Lex
             for (int i = 0; i < numHash; i++)
             {
                 int key = Int32.Parse(netMessage.GetNext());
+                string typeName = netMessage.GetNext();
                 string value = netMessage.GetNext();
-                Debug.Log("Key " + (Property)key + " / " + value);
-                CustomProperties.Add(key, value);
+                object hontoValue = LexNetwork_MessageHandler.ParserAParameter(typeName, value);
+                Debug.Log("Key " + (Property)key + " / " + hontoValue);
+                CustomProperties.Add(key, hontoValue);
             }
         }
 

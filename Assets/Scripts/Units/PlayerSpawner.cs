@@ -95,12 +95,12 @@ public class PlayerSpawner : MonoBehaviour
         {
 
            unit = LexNetwork.InstantiateRoomObject(ConstantStrings.PREFAB_PLAYER, spawnPos, Quaternion.identity, 0,
-                new object[] { character, maxLives, gameField.fieldNo, true, player.uid });
+                new object[] { (int)character, maxLives, gameField.fieldNo, true, player.uid });
         }
         else {
 
             unit = LexNetwork.Instantiate(ConstantStrings.PREFAB_PLAYER, spawnPos, Quaternion.identity, 0,
-                new object[] { character, maxLives, gameField.fieldNo, false, player.uid });
+                new object[] { (int)character, maxLives, gameField.fieldNo, false, player.uid });
         }
 
         if (spawnerType == PlayerSpawnerType.Respawn)

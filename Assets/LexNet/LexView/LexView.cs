@@ -149,7 +149,7 @@ namespace Lex
             //todo sceneview는 이게 올수도 안올수도 있음
             this.InstantiationData = param.data;
             this.ViewID = param.viewID;
-            Debug.LogWarning(gameObject.name+"/ "+ ViewID+" : "+InstantiationData);
+    
             this.objTag = param.prefabName;
             this.ownerActorNr = param.ownerID;
             this.creatorActorNr = param.creatorID;

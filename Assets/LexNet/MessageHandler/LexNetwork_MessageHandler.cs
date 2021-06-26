@@ -180,6 +180,8 @@
         }
         internal static object ParserAParameter(string typename, string dataInfo)
         {
+            Debug.Log(typename + " to " + dataInfo);
+            
             switch (typename)
             {
                 case "NULL":
@@ -187,7 +189,7 @@
                 case nameof(Boolean):
                     return bool.Parse(dataInfo);
                 case nameof(Int32):
-                    return int.Parse(dataInfo);
+                    return Int32.Parse(dataInfo);
                 case nameof(String):
                     return dataInfo;
                 case nameof(Double):
@@ -241,7 +243,7 @@
             return result;
         }
 
-        static string floatFormat = "0.000000";
+        static string floatFormat = "0.00000000";
         internal static string Vector3ToString(Vector3 v)
         {
             return string.Format("({0},{1},{2})", v.x.ToString(floatFormat), v.y.ToString(floatFormat), v.z.ToString(floatFormat));

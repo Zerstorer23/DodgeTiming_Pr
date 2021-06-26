@@ -113,6 +113,7 @@ public class UI_PlayerLobbyManager : MonoBehaviourLex
         }
         else
         {
+            Debug.LogWarning("Add  panel name "+info.gameObject.name);
             playerDictionary.Add(id, info);
         }
         eo.goData.GetComponent<Transform>().SetParent(playerListTransform, false);

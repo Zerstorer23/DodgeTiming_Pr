@@ -122,9 +122,11 @@
             for (int count = 0; count < numHash; count++)
             {
                 int key = Int32.Parse(netMessage.GetNext());
+                string typeName = netMessage.GetNext();
                 string value = netMessage.GetNext();
-                Debug.Log("room hash : " + (Property)key + " / " + value);
-                LexNetwork.CustomProperties.Add(key, value);
+                object hontoValue = LexNetwork_MessageHandler.ParserAParameter(typeName, value);
+                Debug.Log("room hash : " + (Property)key + " / " + hontoValue);
+                LexNetwork.CustomProperties.Add(key, hontoValue);
             }
 
             //Load Players

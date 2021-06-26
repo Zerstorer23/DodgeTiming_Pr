@@ -33,6 +33,7 @@ public class HUD_UserName : MonoBehaviourLex
         controller.SetControllerInfo(isBot, uid);
         isReady = controller.Owner.IsBot;
         UpdateUI();
+        Debug.LogWarning(gameObject.name + " created");
         EventManager.TriggerEvent(MyEvents.EVENT_PLAYER_JOINED, new EventObject() { stringObj = uid, goData = gameObject });
     }
     private void OnDisable()

@@ -6,9 +6,9 @@ public class PingDIsplay : MonoBehaviourLex
 {
   [SerializeField] Text pingValueText;
   
-    void Update()
+    void FixedUpdate()
     {
-        pingValueText.text=  LexNetwork.GetPing()+"ms";
+       // pingValueText.text=  LexNetwork.GetPing()+"ms";
         if (LexNetwork.IsMasterClient)
         {
             pingValueText.color = Color.red;

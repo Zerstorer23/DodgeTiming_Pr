@@ -121,6 +121,7 @@ namespace Lex
         {
             NetworkInstantiateParameter param = new NetworkInstantiateParameter(LexViewManager.RequestPrivateViewID(), prefabName, LocalPlayer.actorID, LocalPlayer.actorID, false, parameters);
             LexView lv = NetObjectPool.PollObject(position, quaternion,  param);
+            Debug.LogWarning("instantiate " + lv.ViewID + " / " + lv.gameObject.name);
             instance.Instantiate_Send(position, quaternion, param);
             return lv.gameObject;
         }
