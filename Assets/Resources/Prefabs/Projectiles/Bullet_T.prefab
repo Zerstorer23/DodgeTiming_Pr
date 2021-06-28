@@ -9,6 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8629071319047820309}
+  - component: {fileID: 8629071319047820328}
+  - component: {fileID: 1108350733559359543}
+  - component: {fileID: 4556413170392631494}
   - component: {fileID: 4308888653616003995}
   - component: {fileID: -2011691279364009716}
   - component: {fileID: 8629071319047820330}
@@ -16,9 +19,6 @@ GameObject:
   - component: {fileID: -6068978053554526307}
   - component: {fileID: -8895642817908627982}
   - component: {fileID: 6212558457632629342}
-  - component: {fileID: 4556413170392631494}
-  - component: {fileID: 1108350733559359543}
-  - component: {fileID: 8629071319047820328}
   m_Layer: 11
   m_Name: Bullet_T
   m_TagString: Projectile
@@ -41,6 +41,58 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8629071319047820328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8629071319047820310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8877c68fba97df84f8ce932cdb24f2e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uid: 
+  viewID: -1
+  prViewType: 0
+  __IsMine: 1
+  prOwner:
+    myNickName: 
+    actorID: 0
+  ownerActorNr: 0
+  creatorActorNr: 0
+  serializedView: {fileID: 0}
+--- !u!114 &1108350733559359543
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8629071319047820310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca0264fd681bab544b4aeb19407d0afa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  controllerType: 0
+  uid: 
+--- !u!114 &4556413170392631494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8629071319047820310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd9ab128256aebb44a82410bd2d295c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pv: {fileID: 8629071319047820328}
+  fieldNo: 0
+  controller: {fileID: 1108350733559359543}
+  bodySprite: {fileID: 2534975670834146036}
 --- !u!61 &4308888653616003995
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -148,8 +200,6 @@ MonoBehaviour:
   networkPos: {x: 0, y: 0, z: 0}
   networkQuaternion: {x: 0, y: 0, z: 0, w: 0}
   syncRotation: 1
-  syncType: 1
-  syncPeriod: 1
 --- !u!114 &-8895642817908627982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188,58 +238,6 @@ MonoBehaviour:
   customBuffs: []
   myCollider: {fileID: 0}
   damageManifold: 2
---- !u!114 &4556413170392631494
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8629071319047820310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd9ab128256aebb44a82410bd2d295c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pv: {fileID: 8629071319047820328}
-  controller: {fileID: 1108350733559359543}
-  bodySprite: {fileID: 2534975670834146036}
---- !u!114 &1108350733559359543
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8629071319047820310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca0264fd681bab544b4aeb19407d0afa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controllerType: 0
-  uid: 
---- !u!114 &8629071319047820328
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8629071319047820310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8877c68fba97df84f8ce932cdb24f2e7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  controllerType: 0
-  uid: 
-  viewID: -1
-  prViewType: 0
-  __IsMine: 1
-  prOwner:
-    myNickName: 
-    actorID: 0
-  ownerActorNr: 0
-  creatorActorNr: 0
-  serializedView: {fileID: 0}
 --- !u!1 &8629071319339072154
 GameObject:
   m_ObjectHideFlags: 0

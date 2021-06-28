@@ -30,10 +30,10 @@ public class Projectile : MonoBehaviourLex
         bool followPlayer = (bool)pv.InstantiationData[2];
         player = GameFieldManager.gameFields[fieldNo].playerSpawner.GetUnitByControllerID(playerID);
 
+       // Debug.Log("Parent :"+player+" / "+playerID+" / "+followPlayer);
         if (player != null)
         {
             controller.SetControllerInfo(player.controller.IsBot, playerID);
-
             if (followPlayer)
             {
                 player.SetMyProjectile(gameObject);

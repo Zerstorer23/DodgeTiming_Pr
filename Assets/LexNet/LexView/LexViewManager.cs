@@ -141,7 +141,6 @@
         }
         public static int RequestRoomViewID()
         {
-            //MUTEX
             if (roomViewID_queue.Count <= 0)
             {
                 Debug.LogWarning("Max view id exceeded / " + LexNetwork.MAX_VIEW_IDS);
@@ -149,17 +148,10 @@
             }
             int id = roomViewID_queue.Dequeue();
             instance.nextRoom = roomViewID_queue.Peek();
-            //  Debug.Log("Poll id " + id);
-            //MUTEX
+
             return id;
         }
-        /*    public static int RequestSceneViewID()
-            {
-                //MUTEX
-                int id = sceneViewNumbers++;
-                Debug.Log("Poll scene id " + id);
-                return id;
-            }*/
+
         public static LexView GetViewByID(int ID)
         {
             if (CheckKey(ID))

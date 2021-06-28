@@ -29,7 +29,7 @@ public class Teleporter : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (otherSide == null || LexNetwork.NetTime < (nextTeleportTime)) return;
+        if (otherSide == null || LexNetwork.Time < (nextTeleportTime)) return;
         string tag = collision.gameObject.tag;
         int tid = collision.gameObject.GetInstanceID();
         // Debug.Log(gameObject.name + "Trigger with " + collision.gameObject.name+" / tag "+tag);
@@ -53,7 +53,7 @@ public class Teleporter : MonoBehaviour
     private void FixedUpdate()
     {
         UpdateCoolTime();
-        if (otherSide == null || LexNetwork.NetTime < (nextTeleportTime)) return;
+        if (otherSide == null || LexNetwork.Time < (nextTeleportTime)) return;
         Collider2D[] collisions = Physics2D.OverlapCircleAll(
         transform.position, 1f, LayerMask.GetMask(TAG_PLAYER, TAG_PROJECTILE));
         
@@ -78,9 +78,9 @@ public class Teleporter : MonoBehaviour
         }
     }
     IEnumerator NumerateCooltime() {
-        while (LexNetwork.NetTime < nextTeleportTime)
+        while (LexNetwork.Time < nextTeleportTime)
         {
-            double remain = (nextTeleportTime - LexNetwork.NetTime);
+            double remain = (nextTeleportTime - LexNetwork.Time);
             coolText.text = remain.ToString("0.0");
             yield return new WaitForFixedUpdate();
         }
@@ -93,7 +93,7 @@ public class Teleporter : MonoBehaviour
 
     private void UpdateCoolTime()
     {
-        double remain = (nextTeleportTime - LexNetwork.NetTime);
+        double remain = (nextTeleportTime - LexNetwork.Time);
         if (remain > 0)
         {
             coolText.text = remain.ToString("0.0");
@@ -109,7 +109,7 @@ public class Teleporter : MonoBehaviour
     void DoTeleport(Unit_Movement unit = null, Projectile_Movement pMove = null)
     {
 
-        SetUsed(LexNetwork.NetTime + teleportDelay);
+        SetUsed(LexNetwork.Time + teleportDelay);
         otherSide.SetUsed(nextTeleportTime);
         otherSide.nextTeleportTime = nextTeleportTime;
         if (unit != null)

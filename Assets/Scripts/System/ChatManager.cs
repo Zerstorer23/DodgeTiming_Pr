@@ -84,8 +84,9 @@ public class ChatManager : MonoBehaviourLexCallbacks
 		string fmsg = string.Format("<color={0}>{1}</color>", color, msg);
 		LexNetwork.SendChat(fmsg);
 	}
-	public static void FocusField() {
-		instance.mainChatBox.FocusOnField(true);
+	public static void FocusField(bool doFocus)
+	{
+		instance.mainChatBox.FocusOnField(doFocus);
 	}
 	public static void SetInputFieldVisibility(bool enable)
 	{

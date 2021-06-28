@@ -11,7 +11,7 @@ namespace Lex
     public class LexView : MonoBehaviour
     {
       //  public ControllerType controllerType = ControllerType.Human;
-        public string uid;
+        [ReadOnly]public string uid;
         public LexPlayer Owner
         {
             get { return prOwner; }
@@ -126,21 +126,24 @@ namespace Lex
             // ->수정을 막는다.
             // 
             serializedView = GetComponent<MonobehaviourLexSerialised>();//TODO 여러개일수 있음
+            if (IsSceneView && serializedView != null) {
+                Debug.LogWarning("Sceneview with serialized view, everyone controls writing");
+            }
             RefreshRpcMonoBehaviourCache();
-            if (serializedView) serializedView.UpdateOwnership(); //SceneView case
         }
         private void Start()
         {
 
         }
-        public void ReceiveSerializedVariable(params object[] parameters)
+        public void ReceiveSerializedVariable(object[] parameters)
         {
             if (serializedView == null)
             {
                 Debug.LogError("No sync view!!!");
                 return;
             }
-            serializedView.OnSyncView(parameters);
+            serializedView.stream.Imbue(parameters);
+            serializedView.OnSyncView(serializedView.stream);
         }
 
 
@@ -172,7 +175,6 @@ namespace Lex
                     Owner = LexNetwork.GetPlayerByID(uid);
                 }
             }
-            if (serializedView) serializedView.UpdateOwnership();
             LexViewManager.AddViewtoDictionary(this);
         }
         public void UpdateOwnership()
@@ -181,7 +183,6 @@ namespace Lex
             {
                 IsMine = LexNetwork.IsMasterClient;
                 Owner = LexNetwork.MasterClient;
-                if (serializedView) serializedView.UpdateOwnership();
             }
         }
 

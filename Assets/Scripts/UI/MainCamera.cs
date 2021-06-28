@@ -206,10 +206,10 @@ public class MainCamera : MonoBehaviour
     IEnumerator rotateRoutine = null;
     private IEnumerator ProcessRotate(float rotateOver)
     {
-        double start = LexNetwork.NetTime;
+        double start = LexNetwork.Time;
         double end = start + rotateOver;
-        while(LexNetwork.NetTime < end){
-            double elapsed = LexNetwork.NetTime - start;
+        while(LexNetwork.Time < end){
+            double elapsed = LexNetwork.Time - start;
             float angle = 360f * ((float)elapsed / rotateOver) - 180f;
             mainVcam.m_Lens.Dutch = angle;
             yield return new WaitForFixedUpdate();

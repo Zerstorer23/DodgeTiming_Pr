@@ -28,14 +28,14 @@ public class BuffData
         duration = (double)data[2];
     }
     public double StartTimer() {
-        endTime = LexNetwork.NetTime + duration;
+        endTime = LexNetwork.Time + duration;
         timerStarted = true;
         return endTime;
     }
 
     public bool IsBuffFinished() {
         if (!timerStarted) return false;
-        return LexNetwork.NetTime >= endTime;
+        return LexNetwork.Time >= endTime;
     }
     public void PrintContent() {
         Debug.Log("Buff : " + buffType + " " + modifier + " for " + duration);

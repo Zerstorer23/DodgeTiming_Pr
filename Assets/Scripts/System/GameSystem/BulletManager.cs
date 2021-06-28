@@ -59,14 +59,14 @@ public class BulletManager : MonoBehaviour
         float modifier = 1+ gameField.playerSpawner.playersOnMap.Count / modPerPerson * modPerStep;
         activeMax =(int)( baseNum * modifier);
         CheckYasumiMutex();
-        startTime = LexNetwork.NetTime;
+        startTime = LexNetwork.Time;
     }
     // Update is called once per frame
     void Update()
     {
         CheckIncrementByDifficulty();
         if (!LexNetwork.IsMasterClient || !GameSession.gameStarted) return;
-        if (LexNetwork.NetTime <= startTime + startSpawnAfter) return;
+        if (LexNetwork.Time <= startTime + startSpawnAfter) return;
         CheckSpawnerSpawns();
 
     }
@@ -74,9 +74,9 @@ public class BulletManager : MonoBehaviour
     private void CheckIncrementByDifficulty()
     {
         if (GameSession.gameModeInfo.gameMode != GameMode.PVE) return;
-        if (LexNetwork.NetTime <= instance.incrementEverySeconds + lastIncrementTime) return;
+        if (LexNetwork.Time <= instance.incrementEverySeconds + lastIncrementTime) return;
         activeMax++;
-        lastIncrementTime = LexNetwork.NetTime;
+        lastIncrementTime = LexNetwork.Time;
     }
 
     private void CheckSpawnerSpawns()

@@ -293,9 +293,13 @@ public partial class GameFieldManager : MonoBehaviourLex
     public IEnumerator WaitAndSpectate()
     {
         yield return new WaitForSeconds(1f);
+        if (totalUnitsDictionary.ContainsKey(LexNetwork.LocalPlayer.uid))
+        {
+            var unit = totalUnitsDictionary[LexNetwork.LocalPlayer.uid];
+            if (unit != null && unit.gameObject.activeInHierarchy) yield break;
+        }
         ChatManager.SetInputFieldVisibility(true);
         MainCamera.FocusOnField(true);
-       // MainCamera.instance.FocusOnAlivePlayer();
+        // MainCamera.instance.FocusOnAlivePlayer();
     }
-
 }

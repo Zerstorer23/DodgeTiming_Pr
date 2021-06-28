@@ -98,6 +98,8 @@ namespace Lex
                 }
                 else if (type.Name == nameof(Quaternion))
                 {
+                  //  var str = QuarternionToString((Quaternion)o);
+                  //  Debug.Log(str+" vs "+(Quaternion)o);
                     paramQueue.Add(QuarternionToString((Quaternion)o));
                 }
                 else
@@ -141,7 +143,75 @@ namespace Lex
             }
             return receivedQueue.Count + " / " + msg;
         }
+        public string PeekSendMessage() {
+            if (paramQueue.Count == 0) return "0";
+            string msg = "";
+            foreach (var s in paramQueue)
+            {
+                msg += " " + s;
+            }
+            return paramQueue.Count + " / " + msg;
+        }
+        public string PrintOut(MessageInfo messageInfo) {
+           // Debug.LogWarning(Peek());
+            try
+            {
+                int i = 0;
+                string[] list = receivedQueue.ToArray();
+                string outstr = messageInfo+" - ";
+                string viewid;
+                switch (messageInfo)
+                {
+                    case MessageInfo.RPC:
+                        viewid = list[i++];
+                        string functionName = list[i++];
+                        outstr += " " + functionName + " on " + viewid;
+                        break;
+                    case MessageInfo.SyncVar:
+                        viewid = list[i++];
+                        outstr += " on " + viewid;
+                        break;
+                    case MessageInfo.Chat:
+                        outstr += " says " + list[i++];
+                        break;
+                    case MessageInfo.Instantiate:
+                        viewid = list[i++];// Int32.Parse(netMessage.GetNext());
+                        i++;
+                        string prefabName = list[i++];
+                        i++;
+                        string position = list[i++];
+                        i++;
+                        outstr += string.Format(" {0}({1}) at {2}", prefabName, viewid, position);
+                        break;
+                    case MessageInfo.Destroy:
+                        viewid = list[i++];
+                        outstr += " " + viewid;
+                        break;
+                    case MessageInfo.SetHash:
+                        break;
+                    case MessageInfo.ServerRequest:
+                        break;
+                    case MessageInfo.ServerCallbacks:
+                        outstr += PrintCallback(list, i);
+                        break;
+                }
+                return outstr;
+            }
+            catch (Exception e) {
+                Debug.LogWarning(e);
+            }
+            return "";
+        }
+        string PrintCallback(string[] list, int i)
+        {
+            int cbtNum = Int32.Parse(list[i++]);
+            LexCallback callbackType = (LexCallback)cbtNum;
+            string outstr = " " + callbackType;
+            return outstr;
+        }
     }
+
+
     public enum MessageInfo
     {
         ServerRequest, RPC, SyncVar, Chat, Instantiate, Destroy, SetHash, ServerCallbacks

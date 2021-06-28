@@ -65,7 +65,7 @@ public class UI_PlayerLobbyManager : MonoBehaviourLex
         Debug.Log("Instantiate after regame");
         if (LexNetwork.IsMasterClient)
         {
-            LexPlayer randomPlayer = LexNetwork.LocalPlayer.Next();// LexNetwork.GetRandomPlayerExceptMe();
+            LexPlayer randomPlayer =  LexNetwork.GetRandomPlayerExceptMe();
             if (randomPlayer != null)
                 LexNetwork.SetMasterClient(randomPlayer.actorID);
         }
@@ -85,9 +85,18 @@ public class UI_PlayerLobbyManager : MonoBehaviourLex
         localPlayerInfo.pv.RPC("ChangeName",   name);
         localPlayerInfo.pv.RPC("ChangeCharacter",   (int)character);
         localPlayerInfo.pv.RPC("SetTeam",   (int)myTeam);
+        //StartCoroutine(ddd());
         charSelector.SetInformation(character);
         UpdateReadyStatus();
     }
+    IEnumerator ddd() {
+        while (true) {
+            localPlayerInfo.pv.RPC("SetTeam", 1);
+            yield return new WaitForSeconds(5f);
+        }
+
+    }
+
 
     internal void OnPlayerLeftRoom(LexPlayer newPlayer)
     {
@@ -113,7 +122,6 @@ public class UI_PlayerLobbyManager : MonoBehaviourLex
         }
         else
         {
-            Debug.LogWarning("Add  panel name "+info.gameObject.name);
             playerDictionary.Add(id, info);
         }
         eo.goData.GetComponent<Transform>().SetParent(playerListTransform, false);

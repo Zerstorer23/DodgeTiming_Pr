@@ -41,12 +41,12 @@ public class Projectile_DamageDealer : MonoBehaviourLex
             EventManager.TriggerEvent(MyEvents.EVENT_MY_PROJECTILE_MISS, new EventObject() { stringObj = myHealth.controller.uid });
         }
         myCollider.enabled = false;
+        duplicateDamageChecker.Reset();//TODO MEMO moved to Disable
         hitCount = 0;
     }
     private void OnEnable()
     {
         myCollider.enabled = true;
-        duplicateDamageChecker.Reset();
     }
     void FindCollider()
     {

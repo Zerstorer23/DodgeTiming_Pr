@@ -146,6 +146,7 @@ public partial class Projectile_Movement : MonoBehaviourLex
 
     private void OnDisable()
     {
+        //TODO MEMO - 안하면 나가토 책상 걸림
         delay_enableAfter = 0f;
         mySprite.DORewind();
         gameObject.transform.DORewind();
@@ -170,7 +171,6 @@ public partial class Projectile_Movement : MonoBehaviourLex
     {
         if (mapSpec.IsOutOfBound(transform.position, 6f))
         {
-            Debug.LogWarning("My pos " + transform.position);
             hp.Kill_Immediate();
         };
     }
@@ -186,7 +186,7 @@ public partial class Projectile_Movement : MonoBehaviourLex
         if (transSync)
         {
             netTransform.EnqueueLocalPosition(GetPosition() + newDirection, Quaternion.Euler(0, 0, eulerAngle));
-
+            
         }
         else {
             transform.localPosition = GetPosition() + newDirection;

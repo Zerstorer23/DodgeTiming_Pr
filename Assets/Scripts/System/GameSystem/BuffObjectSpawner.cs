@@ -16,20 +16,20 @@ public class BuffObjectSpawner : MonoBehaviour
 
     internal void StartEngine()
     {
-        startTime = LexNetwork.NetTime;
+        startTime = LexNetwork.Time;
     }
 
     private void FixedUpdate()
     {
         if (!LexNetwork.IsMasterClient) return;
-        if (!GameSession.gameStarted || LexNetwork.NetTime < startTime + GameFieldManager.instance.spawnAfter) return;
+        if (!GameSession.gameStarted || LexNetwork.Time < startTime + GameFieldManager.instance.spawnAfter) return;
         float thisDelay = GameFieldManager.instance.spawnDelay;
         if (gameField.suddenDeathCalled) {
             thisDelay *= 0.75f;
         }
-        if (LexNetwork.NetTime >= lastSpawnTime + thisDelay) {
+        if (LexNetwork.Time >= lastSpawnTime + thisDelay) {
             InatantiateBuffObject();
-            lastSpawnTime = LexNetwork.NetTime;
+            lastSpawnTime = LexNetwork.Time;
         }
     }
 

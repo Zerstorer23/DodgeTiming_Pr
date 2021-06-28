@@ -43,7 +43,7 @@ public class NetObjectPool : MonoBehaviour
             instance.objectLibrary.Add(tag, new Queue<LexView>());
         }
         go.gameObject.SetActive(false);
-        go.gameObject.hideFlags = HideFlags.HideInHierarchy;
+        //go.gameObject.hideFlags = HideFlags.HideInHierarchy;
         instance.objectLibrary[tag].Enqueue(go);
     }
     public static LexView PollObject(Vector3 position, Quaternion quaternion, NetworkInstantiateParameter param)
@@ -71,7 +71,7 @@ public class NetObjectPool : MonoBehaviour
           //  Debug.LogWarning("Poll " + lv.gameObject.name + " / " + lv.gameObject.activeSelf + " / " + lv.ViewID + " / pos "+lv.gameObject.transform.position);
         }
         go.SetActive(true);
-        go.hideFlags = HideFlags.None;
+      //  go.hideFlags = HideFlags.None;
         return lv;
 
     }

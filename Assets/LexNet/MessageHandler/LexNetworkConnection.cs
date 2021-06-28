@@ -47,7 +47,6 @@
             IPEndPoint iep = new IPEndPoint(addr, portNumber);
             try
             {
-                Debug.Log("Connecting...");
                 mySocket.Connect(iep);
                 stayConnected = true;
             }
@@ -56,17 +55,14 @@
                 Debug.Log(e);
                 return false;
             }
-            Debug.Log("Connection made!");
 
             listenThread = new Thread(new ThreadStart(ListenMessage));
             listenThread.IsBackground = true;
             listenThread.Start();
-            Debug.Log("Listening...");
 
             sendThread = new Thread(new ThreadStart(SendMessage));
             sendThread.IsBackground = true;
             sendThread.Start();
-            Debug.Log("Writing...");
             return true;
         }
         public void SendMessage()
@@ -79,7 +75,8 @@
                 sendMutex.WaitOne();
                 while (sendQueue.Count > 0 && stayConnected)
                 {
-                    string message = MergeMessages();
+                    string message =  MergeMessages();//sendQueue.Dequeue().Build();//
+                   
                     SendAMessage(message);
                     //무한루프에 주의        
                 }
@@ -91,6 +88,7 @@
         {
             //MUTEX
             sendMutex.WaitOne();
+            //Debug.Log(netMessage.PeekSendMessage());
             sendQueue.Enqueue(netMessage);
             sendMutex.ReleaseMutex();
             //MUTEX
@@ -115,13 +113,13 @@
         {
             try
             {
-                byte[] byData = Encoding.UTF8.GetBytes(str + '\0');
+                byte[] byData = Encoding.UTF8.GetBytes(str);// + '\0');
+//                Debug.LogWarning(byData.Length+" / "+str);
                 mySocket.Send(byData);
             }
             catch (Exception e)
             {
-                Debug.Log(e.Message);
-                Debug.Log(e.StackTrace);
+                Debug.Log(e);
             }
         }
 
@@ -149,6 +147,7 @@
              //   Debug.Log("string length " + str.Length);
              //   LexNetwork.PrintStringToCode(str);
                 receiveMutex.WaitOne();
+               // Debug.LogWarning("Received <color=#00c800>" + str + "</color>");
                 receivedQueue.Enqueue(str);
                 receiveMutex.ReleaseMutex();
                 // Debug.Log(receivedQueue.Count + "/ 수신한 메시지:" + str);

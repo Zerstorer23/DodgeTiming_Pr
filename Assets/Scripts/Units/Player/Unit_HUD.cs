@@ -56,6 +56,7 @@ public class Unit_HUD : MonoBehaviour
     private void SetMP()
     {
         if (!player.controller.IsLocal && player.buffManager.GetTrigger(BuffType.HideBuffs)) {
+          //  Debug.Log("HIdden skill");
             MP_fillStack.fillAmount = 1;
             return;
         }

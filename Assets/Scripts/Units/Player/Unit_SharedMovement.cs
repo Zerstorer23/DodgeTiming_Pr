@@ -36,7 +36,6 @@ public class Unit_SharedMovement : MonoBehaviourLex
         myField.playerSpawner.desolator = this;
         mapSpec = myField.mapSpec;
         controllers.Clear();
-        Debug.Log("Controller size " + controllers.Count);
         transform.position = new Vector3(0, transform.position.y);
         EventManager.StartListening(MyEvents.EVENT_FIELD_FINISHED, OnFieldFinish);
 

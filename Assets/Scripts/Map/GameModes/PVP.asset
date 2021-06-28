@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameMode: 0
   callSuddenDeath: 1
-  useDesolator: 1
+  useDesolator: 0
   scaleMapByPlayerNum: 1
   isTeamGame: 0
   isCoop: 0
-  allowBots: 1

@@ -26,7 +26,7 @@ public partial class IEvaluationMachine
             }
             else if (go.tag != TAG_BOX_OBSTACLE)
             {
-                float dist = Vector2.Distance(player.movement.networkPos, go.transform.position);
+                float dist = Vector2.Distance(player.movement.netTransform.networkPos, go.transform.position);
                 if (dist > (range_Search + escapePadding))
                 {
                     RemoveFoundObject(key);
@@ -36,7 +36,7 @@ public partial class IEvaluationMachine
     }
     public void FindNearByObjects()
     {
-        Collider2D[] collisions = Physics2D.OverlapCircleAll(player.movement.networkPos, range_Search, LayerMask.GetMask(TAG_PLAYER, TAG_PROJECTILE, TAG_BUFF_OBJECT));
+        Collider2D[] collisions = Physics2D.OverlapCircleAll(player.movement.netTransform.networkPos, range_Search, LayerMask.GetMask(TAG_PLAYER, TAG_PROJECTILE, TAG_BUFF_OBJECT));
 
         for (int i = 0; i < collisions.Length; i++)
         {

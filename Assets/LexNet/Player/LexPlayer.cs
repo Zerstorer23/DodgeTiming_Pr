@@ -141,7 +141,6 @@ namespace Lex
         }
         public void SetCustomProperties(LexHashTable lexHash)
         {
-            Debug.Log("Update hash " + lexHash.lexHash.Count);
             CustomProperties.UpdateProperties(lexHash);
             if (IsHuman)
             {
@@ -186,14 +185,14 @@ namespace Lex
             this.IsMasterClient = netMessage.GetNext() == "1";
             int numHash = Int32.Parse(netMessage.GetNext());
             controllerType = ControllerType.Human;
-            Debug.Log(string.Format("Received Player {0}, isMaster{1}", actorID, IsMasterClient));
+//            Debug.Log(string.Format("Received Player {0}, isMaster{1}", actorID, IsMasterClient));
             for (int i = 0; i < numHash; i++)
             {
                 int key = Int32.Parse(netMessage.GetNext());
                 string typeName = netMessage.GetNext();
                 string value = netMessage.GetNext();
                 object hontoValue = LexNetwork_MessageHandler.ParserAParameter(typeName, value);
-                Debug.Log("Key " + (Property)key + " / " + hontoValue);
+             //   Debug.Log("Key " + (Property)key + " / " + hontoValue);
                 CustomProperties.Add(key, hontoValue);
             }
         }

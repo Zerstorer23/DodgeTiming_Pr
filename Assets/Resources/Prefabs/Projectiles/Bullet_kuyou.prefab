@@ -90,11 +90,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5746965195692862870}
+  - component: {fileID: 520848983174623557}
   - component: {fileID: 4949621671724066998}
   - component: {fileID: 4363318694933699697}
   - component: {fileID: 7941743628016131037}
   - component: {fileID: 4222962811617892285}
-  - component: {fileID: 520848983174623557}
   - component: {fileID: 547498901956526378}
   - component: {fileID: 5746965195692862891}
   m_Layer: 11
@@ -119,6 +119,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &520848983174623557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5746965195692862869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd9ab128256aebb44a82410bd2d295c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pv: {fileID: 0}
+  fieldNo: 0
+  controller: {fileID: 0}
+  bodySprite: {fileID: 0}
 --- !u!60 &4949621671724066998
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -212,21 +228,6 @@ MonoBehaviour:
   characterUser: 5
   mySprite: {fileID: 1276445728853424614}
   tweenEase: 0
---- !u!114 &520848983174623557
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5746965195692862869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd9ab128256aebb44a82410bd2d295c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pv: {fileID: 0}
-  controller: {fileID: 0}
-  bodySprite: {fileID: 0}
 --- !u!114 &547498901956526378
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,7 +254,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8877c68fba97df84f8ce932cdb24f2e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controllerType: 0
   uid: 
   viewID: -1
   prViewType: 0

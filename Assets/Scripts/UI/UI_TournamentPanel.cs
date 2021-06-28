@@ -14,7 +14,7 @@ public class UI_TournamentPanel : MonoBehaviour
     double timeoutWait;
     public void SetPanel(LexPlayer[] win,float delay)
     {
-        startTime = LexNetwork.NetTime;
+        startTime = LexNetwork.Time;
         timeoutWait = delay;
         string text = "";
         foreach (var p in win) {
@@ -46,7 +46,7 @@ public class UI_TournamentPanel : MonoBehaviour
     private void FixedUpdate()
     {
         if (timeoutWait <= 0) return;
-        double remain = (startTime + timeoutWait) - LexNetwork.NetTime;
+        double remain = (startTime + timeoutWait) - LexNetwork.Time;
         if (remain <= 0)
         {
             timeoutWait = -1f;

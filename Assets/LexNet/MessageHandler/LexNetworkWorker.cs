@@ -44,7 +44,6 @@ namespace Lex
         internal void SetLocalPlayer(LexPlayer player)
         {
             LocalPlayer = player;
-            Debug.Log("Local player set : " + player.actorID);
             //    playerDictionary.Add(player.actorID, player);
         }
 
@@ -52,7 +51,7 @@ namespace Lex
         {
             playerDictionaryMutex.WaitOne();
             playerDictionary.Add(player.uid, player);
-            Debug.LogWarning("Add player " + player.uid);
+
             if (player.IsLocal) {
                 LocalPlayer = player;
             }
@@ -118,7 +117,7 @@ namespace Lex
             netMessage.EncodeParameters(parameters);
             networkConnector.EnqueueAMessage(netMessage);
         }
-        public void SyncVar_Receive(int viewID, params object[] parameters)
+        public void SyncVar_Receive(int viewID, object[] parameters)
         {
             LexView lv = LexViewManager.GetViewByID(viewID);
             if (!lv) return;
@@ -127,6 +126,7 @@ namespace Lex
             {
                 foreach (object obj in parameters) Debug.Log(obj);
             }
+            
             lv.ReceiveSerializedVariable(parameters);
         }
 
@@ -161,8 +161,6 @@ namespace Lex
             }
             playerDictionary[nextMaster].IsMasterClient = true;
             MasterClient = playerDictionary[nextMaster];
-            Debug.LogWarning(LocalPlayer);
-            Debug.LogWarning(MasterClient);
             if (LocalPlayer !=null && nextMaster == LocalPlayer.uid)
             {
                 IsMasterClient = true;
@@ -179,8 +177,8 @@ namespace Lex
         }
         internal void InitServerTime(long time)
         {
-            NetTime = (double)time / 1000; //long is in mills
-            Debug.Log("서버 시작시간 : " + NetTime);
+            Time = (double)time / 1000; //long is in mills
+            Debug.Log("서버 시작시간 : " + Time);
         }
         internal int ModifyServerTime(long timeValue)
         {
@@ -189,10 +187,9 @@ namespace Lex
             if (remainingRuns <= 0)
             {
                 timeInMills = timeHandler.Finalise();
-                NetTime += timeInMills;
+                Time += timeInMills;
                 Debug.Log("Modified time : " + timeInMills);
             }
-            Debug.Log("Remaining : " + remainingRuns);
             return remainingRuns;
         }
 
@@ -201,7 +198,7 @@ namespace Lex
         double pingPeriodInSec = 5;
         public void SendPing()
         {
-            lastSentPing = NetTime;
+            lastSentPing = Time;
             LexNetworkMessage netMessage = new LexNetworkMessage();
             netMessage.Add(LocalPlayer.actorID);
             netMessage.Add(MessageInfo.ServerRequest);
@@ -210,7 +207,7 @@ namespace Lex
         }
         public void ReceivePing()
         {
-            lastReceivedPing = NetTime;
+            lastReceivedPing = Time;
         }
         internal void SetConnected(bool v)
         {

@@ -45,8 +45,14 @@ public class Skill_Kyon : ISkill
     {
         HealthPoint targetHP = eo.hitHealthPoint;
         if (targetHP.unitType != UnitType.Player) return;
-        CheckYasumi(targetHP);
-        if (targetHP.unitPlayer.myCharacter == CharacterType.KYONKO || targetHP.unitPlayer.myCharacter == CharacterType.KYONKO) return;
+        if (eo.sourceDamageDealer.myHealth.controller.uid != original.controller.uid) return;
+        //CheckYasumi(targetHP);
+        CharacterType targetChar = targetHP.unitPlayer.myCharacter;
+        if (targetChar == CharacterType.KYONKO
+            || targetHP.unitPlayer.myCharacter == CharacterType.KYONKO
+            || targetHP.unitPlayer.myCharacter == CharacterType.YASUMI
+            ) return;
+
         Debug.Log("Changed skill ");
         obtainedSkill = targetHP.unitPlayer.skillManager.mySkill;
         original.maxStack = 1;

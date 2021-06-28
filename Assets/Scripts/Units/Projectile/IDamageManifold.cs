@@ -130,16 +130,16 @@ public class DamageTimed : IDamageManifold
     {
         if (damageRecords.ContainsKey(tid))
         {
-            if (LexNetwork.NetTime - damageRecords[tid] >= 0.7f)
+            if (LexNetwork.Time - damageRecords[tid] >= 0.7f)
             {
-                damageRecords[tid] = LexNetwork.NetTime;
+                damageRecords[tid] = LexNetwork.Time;
                 return true;
             }
             return false;
         }
         else
         {
-            damageRecords.Add(tid, LexNetwork.NetTime);
+            damageRecords.Add(tid, LexNetwork.Time);
             return true;
         }
     }

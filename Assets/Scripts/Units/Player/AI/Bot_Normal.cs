@@ -31,9 +31,9 @@ public class Bot_Normal : IEvaluationMachine {
                 continue;
             }
             int tid = go.GetInstanceID();
-            Vector3 directionToTarget = go.transform.position - player.movement.networkPos;
+            Vector3 directionToTarget = go.transform.position - player.movement.netTransform.networkPos;
             directionToTarget.Normalize();
-            float distance = Vector2.Distance(go.transform.position, player.movement.networkPos) - GetRadius(go.transform.localScale);
+            float distance = Vector2.Distance(go.transform.position, player.movement.netTransform.networkPos) - GetRadius(go.transform.localScale);
             //   if (distance > range) continue;
             float multiplier = 0f;
             switch (go.tag)

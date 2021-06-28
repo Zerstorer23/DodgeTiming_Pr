@@ -15,7 +15,7 @@ public class GameSession : MonoBehaviourLex
     public GameOverManager gameOverManager;
     public static ConfigsManager configsManager;
     public string versionCode;
-    public static double STANDARD_PING = 0.08d;//0.075d;//자연스럽게 보이는 한 가장 크게
+    public static double STANDARD_PING = 0.08d;//0.08d;//자연스럽게 보이는 한 가장 크게
     public bool requireHalfAgreement = true;
 
     private static GameSession prGameSession;

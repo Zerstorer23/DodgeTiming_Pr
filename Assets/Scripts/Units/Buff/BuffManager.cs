@@ -30,14 +30,16 @@ public class BuffManager : MonoBehaviourLex
     }
     private void OnEnable()
     {
-        RemoveAllBuff();
-        buffDictionary.Clear();
         if (unitPlayer.myCharacter == CharacterType.YASUMI)
         {
             pv.RPC("AddBuff",   (int)BuffType.HideBuffs, 1f, -1d);
         }
     }
+    private void OnDisable()
+    {
 
+        RemoveAllBuff();
+    }
 
     private void CheckBuffDeactivations()
     {
@@ -254,11 +256,10 @@ public class BuffManager : MonoBehaviourLex
 
     private void RemoveAllBuff()
     {
-        for (int i = 0; i < Buffs_active.Count; i++)
-        {
-            RemoveBuff(Buffs_active[i]);
-        }
         Buffs_active.Clear();
+        buffDictionary.Clear();
+        buffTriggers.Clear();
+        stats.Clear();
         buffIndicator.ClearBuffs();
     }
 

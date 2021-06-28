@@ -90,7 +90,7 @@ public class SkillManager : MonoBehaviourLex
             if (currStack > 0)
             {
                 UI_TouchPanel.isTouching = false;
-                lastActivated = LexNetwork.NetTime;
+                lastActivated = LexNetwork.Time;
                 player.PlayShootAudio();
                 pv.RPC("SetSkillInUse",   true);
                 pv.RPC("ChangeStack",   -1);

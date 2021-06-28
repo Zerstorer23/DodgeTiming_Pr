@@ -46,9 +46,16 @@ public class Skill_Kyonko : ISkill
     public override void OnMyProjectileHit(EventObject eo)
     {
         HealthPoint targetHP = eo.hitHealthPoint;
+        if (eo.sourceDamageDealer.myHealth.controller.uid != original.controller.uid) return;
         if (targetHP.unitType != UnitType.Player) return;
-        CheckYasumi(targetHP);
-        if (targetHP.unitPlayer.myCharacter == CharacterType.KYONKO|| targetHP.unitPlayer.myCharacter == CharacterType.KYONKO) return;
+       // CheckYasumi(targetHP);
+
+        CharacterType targetChar = targetHP.unitPlayer.myCharacter;
+        if (targetChar == CharacterType.KYONKO
+            || targetHP.unitPlayer.myCharacter == CharacterType.KYONKO
+            || targetHP.unitPlayer.myCharacter == CharacterType.YASUMI
+            ) return;
+
         Debug.Log("Changed skill ");
         obtainedSkill = targetHP.unitPlayer.skillManager.mySkill;
         original.maxStack = 1;

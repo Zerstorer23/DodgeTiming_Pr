@@ -123,16 +123,20 @@ public class PlayerSpawner : MonoBehaviour
         }
         SpawnPlayer(player);    
     }
-    float ModifyRespawnTime(Team team) {
-        if ((team == Team.HOME && numAway > numHome)) {
-            return respawnTime * (numHome / numAway);
-        
-        } else if (team == Team.AWAY && numHome > numAway)
+    float ModifyRespawnTime(Team team)
+    {
+        if ((team == Team.HOME && numAway > numHome))
         {
-            return respawnTime * (numAway / numHome);
+            return respawnTime * ((float)numHome / numAway);
+
+        }
+        else if (team == Team.AWAY && numHome > numAway)
+        {
+            return respawnTime * ((float)numAway / numHome);
         }
         return respawnTime;
     }
+
 
     public void RegisterPlayer(string uid, Unit_Player unit)
     {

@@ -109,7 +109,6 @@ public class Projectile_Homing : MonoBehaviourLex
     {
         if (lexView.IsMine)
         {
-
             EventManager.StopListening(MyEvents.EVENT_MY_PROJECTILE_HIT, OnProjectileHit);
         }
         homingTarget = null;

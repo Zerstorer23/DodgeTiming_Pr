@@ -57,7 +57,7 @@ public partial class IEvaluationMachine
             if (go.tag != TAG_PROJECTILE) continue;
             if (Vector2.Distance(go.transform.position, player.transform.position) > range_Collision) continue;
             if (!IsProjectileDangerous(go.GetInstanceID(), go)) continue;
-            int angleToObj = (int)GetAngleBetween(movement.networkPos, go.transform.position);
+            int angleToObj = (int)GetAngleBetween(movement.netTransform.networkPos, go.transform.position);
             int startAngle = (angleToObj - searchRange);
             if (startAngle < 0) startAngle += 360;
             for (float i = 0; i < searchRange * 2; i++)
@@ -94,9 +94,9 @@ public partial class IEvaluationMachine
     }
     protected Vector3 EvaluateToPoint(Vector3 point, bool positive, float flavour = 1f)
     {
-        Vector3 dirToPoint = point - movement.networkPos;
+        Vector3 dirToPoint = point - movement.netTransform.networkPos;
         dirToPoint.Normalize();
-        float dist = Vector2.Distance(point, movement.networkPos);
+        float dist = Vector2.Distance(point, movement.netTransform.networkPos);
         Vector3 direction = dirToPoint * GetMultiplier(dist) * flavour;
         if (!positive) direction *= -1f;
         return direction;

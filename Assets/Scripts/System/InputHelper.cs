@@ -79,20 +79,20 @@ public class InputHelper : MonoBehaviour
     float GetAD() {
         if (Input.GetKeyDown(KeyCode.A))
         {
-            aDown = LexNetwork.NetTime;
+            aDown = LexNetwork.Time;
         }
         else if (Input.GetKeyDown(KeyCode.D))
         {
-            dDown = LexNetwork.NetTime;
+            dDown = LexNetwork.Time;
         }
 
         if (Input.GetKey(KeyCode.A)) {
-            double ratio = ((LexNetwork.NetTime - aDown) / fullTime);
+            double ratio = ((LexNetwork.Time - aDown) / fullTime);
             return -(float)Math.Min(ratio, 1d);
         }
         else if(Input.GetKey(KeyCode.D))
         {
-            double ratio = ((LexNetwork.NetTime - dDown) / fullTime);
+            double ratio = ((LexNetwork.Time - dDown) / fullTime);
             return (float)Math.Min(ratio, 1d);
         }else {
             return 0f;
@@ -101,20 +101,20 @@ public class InputHelper : MonoBehaviour
     float GetWS() {
         if (Input.GetKeyDown(KeyCode.W))
         {
-            wDown = LexNetwork.NetTime;
+            wDown = LexNetwork.Time;
         }
         else if (Input.GetKeyDown(KeyCode.S))
         {
-            sDown = LexNetwork.NetTime;
+            sDown = LexNetwork.Time;
         }
         if (Input.GetKey(KeyCode.W))
         {
-            double ratio = ((LexNetwork.NetTime - wDown) / fullTime);
+            double ratio = ((LexNetwork.Time - wDown) / fullTime);
             return (float)Math.Min(ratio, 1d);
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            double ratio = ((LexNetwork.NetTime - sDown) / fullTime);
+            double ratio = ((LexNetwork.Time - sDown) / fullTime);
             return -(float)Math.Min(ratio, 1d);
         }
         else

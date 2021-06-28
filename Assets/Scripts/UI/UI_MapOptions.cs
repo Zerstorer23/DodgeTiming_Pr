@@ -65,7 +65,7 @@ public class UI_MapOptions : MonoBehaviourLex
         if (LexNetwork.IsMasterClient)
         {
             int index = gamemodeDropdown.value;
-            pv.RPC("SetGameMode",   index);
+            pv.RPC("SetGameMode",index);
             ChatManager.SendNotificationMessage(string.Format("게임모드가 {0}로 변경되었습니다.", (GameMode)index));
         }
     }

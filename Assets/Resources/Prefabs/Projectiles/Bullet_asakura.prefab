@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8629071319047820309}
+  - component: {fileID: 4556413170392631494}
   - component: {fileID: 8709314251964653671}
   - component: {fileID: 8629071319047820330}
   - component: {fileID: -6068978053554526307}
   - component: {fileID: -8895642817908627982}
   - component: {fileID: 6212558457632629342}
-  - component: {fileID: 4556413170392631494}
   - component: {fileID: -958052663103056325}
   - component: {fileID: 8629071319047820328}
   m_Layer: 11
@@ -39,6 +39,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4556413170392631494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8629071319047820310}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd9ab128256aebb44a82410bd2d295c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pv: {fileID: 0}
+  fieldNo: 0
+  controller: {fileID: 0}
+  bodySprite: {fileID: 0}
 --- !u!60 &8709314251964653671
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -110,8 +126,6 @@ MonoBehaviour:
   networkPos: {x: 0, y: 0, z: 0}
   networkQuaternion: {x: 0, y: 0, z: 0, w: 0}
   syncRotation: 1
-  syncType: 1
-  syncPeriod: 0.1
 --- !u!114 &-8895642817908627982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -150,21 +164,6 @@ MonoBehaviour:
   customBuffs: []
   myCollider: {fileID: 0}
   damageManifold: 0
---- !u!114 &4556413170392631494
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8629071319047820310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bd9ab128256aebb44a82410bd2d295c3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  pv: {fileID: 0}
-  controller: {fileID: 0}
-  bodySprite: {fileID: 0}
 --- !u!114 &-958052663103056325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191,7 +190,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8877c68fba97df84f8ce932cdb24f2e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controllerType: 0
   uid: 
   viewID: -1
   prViewType: 0

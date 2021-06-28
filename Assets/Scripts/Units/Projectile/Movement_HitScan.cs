@@ -5,11 +5,9 @@ using UnityEngine;
 using static ConstantStrings;
 
 public class Movement_HitScan : 
-//  MonoBehaviour
-//MonoBehaviourLexCallbacks, IPunObservable
 MonoBehaviourLex
 {
-    float moveSpeed = 600f;
+    float moveSpeed = 600f;// TODO
     Rigidbody2D myRigidBody;
     CircleCollider2D myCollider;
     Projectile_Movement pMove;
@@ -45,7 +43,7 @@ MonoBehaviourLex
     private void OnCollisionEnter2D(Collision2D collision)
     {
         string tag = collision.gameObject.tag;
-        // Debug.Log(gameObject.name + "Collision with " + collision.gameObject.name + " / tag " + tag);
+      //  Debug.Log(gameObject.name + "Collision with " + collision.gameObject.name + " / tag " + tag);
         switch (tag)
         {
             case TAG_PLAYER:
@@ -57,7 +55,19 @@ MonoBehaviourLex
     private void OnCollisionExit2D(Collision2D collision)
     {
         string tag = collision.gameObject.tag;
-        // Debug.Log(gameObject.name + "Collision with " + collision.gameObject.name + " / tag " + tag);
+       //Debug.Log(gameObject.name + "Collision with " + collision.gameObject.name + " / tag " + tag);
+        switch (tag)
+        {
+            case TAG_PLAYER:
+            case TAG_PROJECTILE:
+                myCollider.isTrigger = false;
+                break;
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        string tag = collision.gameObject.tag;
+      //  Debug.Log(gameObject.name + "Collision with " + collision.gameObject.name + " / tag " + tag);
         switch (tag)
         {
             case TAG_PLAYER:
@@ -81,7 +91,7 @@ public class VelocityVector
 
     public bool IsExpired()
     {
-        return (timestamp <= LexNetwork.NetTime);
+        return (timestamp <= LexNetwork.Time);
     }
     public override string ToString()
     {

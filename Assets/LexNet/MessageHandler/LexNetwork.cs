@@ -116,12 +116,11 @@ namespace Lex
             networkConnector.Disconnect();
         }
 
-#region instantiation
+        #region instantiation
         public static GameObject Instantiate(string prefabName, Vector3 position, Quaternion quaternion, byte group = 0, object[] parameters = null)
         {
             NetworkInstantiateParameter param = new NetworkInstantiateParameter(LexViewManager.RequestPrivateViewID(), prefabName, LocalPlayer.actorID, LocalPlayer.actorID, false, parameters);
-            LexView lv = NetObjectPool.PollObject(position, quaternion,  param);
-            Debug.LogWarning("instantiate " + lv.ViewID + " / " + lv.gameObject.name);
+            LexView lv = NetObjectPool.PollObject(position, quaternion, param);
             instance.Instantiate_Send(position, quaternion, param);
             return lv.gameObject;
         }
@@ -131,18 +130,17 @@ namespace Lex
         {
             NetworkInstantiateParameter param = new NetworkInstantiateParameter(LexViewManager.RequestRoomViewID(), prefabName, MasterClient.actorID, LocalPlayer.actorID, true, parameters);
             LexView lv = NetObjectPool.PollObject(position, quaternion, param);
-            Debug.Log("Instnatiate view id " + lv.ViewID);
             instance.Instantiate_Send(position, quaternion, param);
             return lv.gameObject;
         }
-#endregion
+        #endregion
         public static int GetPing()
         {
             if (!IsConnected)
             {
                 return 0;
             }
-            if (NetTime > instance.lastReceivedPing + instance.pingPeriodInSec)
+            if (Time > instance.lastReceivedPing + instance.pingPeriodInSec)
             {
                 instance.SendPing();
             }
@@ -153,7 +151,7 @@ namespace Lex
 
         public static bool CloseConnection(LexPlayer player = null)
         {
-//TODO
+            //TODO
             //클라이언트에게 접속 해제를 요청 합니다.(KICK). 마스터 클라이언트만 이것을 수행 할 수 있습니다
             return true;
         }
@@ -171,31 +169,32 @@ namespace Lex
             return true;
         }
 
-        public static void Destroy(LexView lv = null, int viewID = -1)
+        public static void Destroy(GameObject gameObject)
         {
-            if (lv != null)
-            {
-                viewID = lv.ViewID;
-            }
-            else if (viewID != -1)
-            {
-                lv = LexViewManager.GetViewByID(viewID);
-                if (lv == null)
-                {
-                    return;
-                }
-            }
-            else
-            {
-                Debug.LogWarning("Wrong parameter");
+            var lv = gameObject.GetComponent<LexView>();
+            if (lv == null) {
+                Debug.LogWarning("No View in " + gameObject.name);
                 return;
             }
+            Destroy(lv);
+        }
+        public static void Destroy(int viewID){
+           var lv = LexViewManager.GetViewByID(viewID);
+            if (lv == null)
+            {
+                Debug.LogWarning("No such ViewID " + viewID);
+                return;
+            }
+            Destroy(lv);
+        }
 
-            if (!lv.IsMine)
+        public static void Destroy(LexView lv) {
+            if (!lv.IsMine && !IsMasterClient)
             {
-                Debug.LogWarning(viewID + " is not mine! ");
+                Debug.LogWarning(lv.ViewID + " is not mine! ");
                 return;
             }
+            int viewID = lv.ViewID;
             RemoveBufferedRPCs(lv); //서버 버퍼에서 Instantiate와 모든 RPC제거
             LexViewManager.ReleaseViewID(lv);
             LexNetworkMessage netMessage = new LexNetworkMessage(LocalPlayer.actorID, (int)MessageInfo.Destroy, viewID);
@@ -244,10 +243,6 @@ namespace Lex
 
         public static void SendChat(string chatMessage)
         {
-            if (!useLexNet) {
-                Debug.Log(chatMessage);
-                return;
-            }
             NetworkEventManager.TriggerEvent(LexCallback.ChatReceived, new NetEventObject() { stringObj = chatMessage });
             chatMessage = chatMessage.Replace(NET_DELIM, "^^");
             LexNetworkMessage netMessage = new LexNetworkMessage(LocalPlayer.actorID, (int)MessageInfo.Chat, chatMessage);
@@ -294,7 +289,7 @@ namespace Lex
         }
         private void Update()
         {
-            NetTime += Time.deltaTime;
+            Time += UnityEngine.Time.deltaTime;
             networkConnector.DequeueReceivedBuffer();
         }
         private void FixedUpdate()

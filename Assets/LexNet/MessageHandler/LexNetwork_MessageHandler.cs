@@ -11,7 +11,6 @@
 
         public void HandleMessage(string str)
         {
-           Debug.Log("Received message " + str);
             LexNetworkMessage netMessage = new LexNetworkMessage();
             netMessage.Split(str);
             while (netMessage.HasNext())
@@ -22,11 +21,13 @@
                 if (!isMyPacket) continue;
    /*             try
                 {*/
-                   Debug.LogWarning("처리중: " + netMessage.Peek());
+                 //   Debug.LogWarning("처리중: " + netMessage.Peek());
                     int lengthOfMessages = Int32.Parse(netMessage.GetNext());
                     int sentActorNumber = Int32.Parse(netMessage.GetNext());
                     MessageInfo messageInfo = (MessageInfo)Int32.Parse(netMessage.GetNext());
-               //     Debug.Log(sentActorNumber + " message " + messageInfo);
+                    if (messageInfo != MessageInfo.SyncVar) {
+                        Debug.LogWarning(netMessage.PrintOut(messageInfo));
+                    }
                     switch (messageInfo)
                     {
                         case MessageInfo.RPC:
@@ -126,7 +127,6 @@
             NetworkInstantiateParameter netParam = new NetworkInstantiateParameter(targetViewID, prefabName, ownerID, sentActorNumber, isRoomView, iparam);
             NetObjectPool.PollObject(position, quaternion, netParam);
             //Params
-            Debug.Log("Instantiate finished " + netMessage.GetReceivedSize());
         }
 
         private void ParseChat(int sentActorNumber, LexNetworkMessage netMessage)
@@ -179,9 +179,7 @@
             return param;
         }
         internal static object ParserAParameter(string typename, string dataInfo)
-        {
-            Debug.Log(typename + " to " + dataInfo);
-            
+        {            
             switch (typename)
             {
                 case "NULL":
@@ -227,8 +225,6 @@
             int start = sVector.IndexOf('(') + 1;
             int end = sVector.IndexOf(')');
             sVector = sVector.Substring(start, end - start);
-            Debug.Log("Parenthe removes " + sVector);
-
             // split the items
             string[] sArray = sVector.Split(',');
 
@@ -250,7 +246,7 @@
         }
         internal static string QuarternionToString(Quaternion q)
         {
-            return string.Format("({0},{1},{2},{3})", q.w.ToString(floatFormat), q.x.ToString(floatFormat), q.y.ToString(floatFormat), q.z.ToString(floatFormat));
+            return string.Format("({0},{1},{2},{3})", q.x.ToString(floatFormat), q.y.ToString(floatFormat), q.z.ToString(floatFormat), q.w.ToString(floatFormat));
         }
     }
 }

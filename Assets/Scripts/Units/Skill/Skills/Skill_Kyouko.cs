@@ -11,13 +11,16 @@ public class Skill_Kyouko : ISkill
         mySkill.SetParam(SkillParams.MoveSpeed, 25f);
         mySkill.SetParam(SkillParams.PrefabName, PREFAB_BULLET_KYOUKO);
         mySkill.SetParam(SkillParams.ReactionType, ReactionType.Die);
+        mySkill.SetParam(SkillParams.Duration, 0.25f);
+        for (int i = 0; i < 2; i++)
+        {
+            mySkill.Enqueue(new Action_Player_GetAim());
+            mySkill.Enqueue(new Action_GetCurrentPlayerVector3_AngledOffset());
+            mySkill.Enqueue(new Action_InstantiateBulletAt());
+            mySkill.Enqueue(new Action_SetProjectileStraight());
+            mySkill.Enqueue(new Action_WaitForSeconds());
 
-        mySkill.Enqueue(new Action_Player_GetAim());
-        mySkill.Enqueue(new Action_GetCurrentPlayerVector3_AngledOffset());
-        mySkill.Enqueue(new Action_InstantiateBulletAt());
-        mySkill.Enqueue(new Action_SetProjectileStraight());
-        
-
+        }
         /*        float angleSize = 15f;
                 float angleOffset = skm.unitMovement.GetAim() - angleSize;
                 for (int i = 0; i < 3; i++)

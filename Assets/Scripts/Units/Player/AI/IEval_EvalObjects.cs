@@ -25,9 +25,9 @@ public partial class IEvaluationMachine
                 continue;
             }
             int tid = go.GetInstanceID();
-            Vector3 directionToTarget = go.transform.position - player.movement.networkPos;
+            Vector3 directionToTarget = go.transform.position - player.movement.netTransform.networkPos;
             directionToTarget.Normalize();
-            float distance = Vector2.Distance(go.transform.position, player.movement.networkPos) - GetRadius(go.transform.localScale);
+            float distance = Vector2.Distance(go.transform.position, player.movement.netTransform.networkPos) - GetRadius(go.transform.localScale);
             //   if (distance > range) continue;
             float multiplier = 0f;
             switch (go.tag)
@@ -85,12 +85,12 @@ public partial class IEvaluationMachine
     public virtual Vector3 PreventExtremeMove(Vector3 v)
     {
 
-        if (LexNetwork.NetTime > lastRecTime + 0.5)
+        if (LexNetwork.Time > lastRecTime + 0.5)
         {
-            lastRecPos = player.movement.networkPos;
-            lastRecTime = LexNetwork.NetTime;
+            lastRecPos = player.movement.netTransform.networkPos;
+            lastRecTime = LexNetwork.Time;
         }
-        Vector3 newPos = player.movement.networkPos + player.movement.GetMovementSpeed() * Time.deltaTime * v;
+        Vector3 newPos = player.movement.netTransform.networkPos + player.movement.GetMovementSpeed() * Time.deltaTime * v;
         float dist = Vector2.Distance(lastRecPos, newPos);
         if (dist <= threshold
            && collideCount < 2
@@ -348,14 +348,14 @@ public partial class IEvaluationMachine
         }
         int activeMax = gameFields[player.fieldNo].bulletSpawner.activeMax;
         Vector3 move = Vector3.zero;
-        float xBound = (movement.networkPos.x < movement.mapSpec.xMid) ? movement.mapSpec.xMin : movement.mapSpec.xMax;
-        float yBound = (movement.networkPos.y < movement.mapSpec.yMid) ? movement.mapSpec.yMin : movement.mapSpec.yMax;
+        float xBound = (movement.netTransform.networkPos.x < movement.mapSpec.xMid) ? movement.mapSpec.xMin : movement.mapSpec.xMax;
+        float yBound = (movement.netTransform.networkPos.y < movement.mapSpec.yMid) ? movement.mapSpec.yMin : movement.mapSpec.yMax;
 
-        walls[0] = new Vector3(movement.networkPos.x, yBound);
-        walls[1] = new Vector3(xBound, movement.networkPos.y);
+        walls[0] = new Vector3(movement.netTransform.networkPos.x, yBound);
+        walls[1] = new Vector3(xBound, movement.netTransform.networkPos.y);
         float mod = 3f;// (activeMax == 0) ? 1f : 2f;
         for (int i = 0; i < 2; i++) {
-            if (Vector2.Distance(walls[i], movement.networkPos) <= range_Search)
+            if (Vector2.Distance(walls[i], movement.netTransform.networkPos) <= range_Search)
             {
                 move += EvaluateToPoint(walls[i], false, mod);
             }

@@ -78,7 +78,7 @@ public class GameOverManager : MonoBehaviour
 
     private void SetGameInfo()
     {
-        float gameTime = (float)(LexNetwork.NetTime - UI_Timer.startTime);
+        float gameTime = (float)(LexNetwork.Time - UI_Timer.startTime);
         miniWinnerName.text = string.Format("{0}초", gameTime.ToString("0.0"));
         if (GameSession.gameModeInfo.gameMode == GameMode.PVE)
         {

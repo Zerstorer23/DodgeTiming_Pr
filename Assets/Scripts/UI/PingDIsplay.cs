@@ -8,7 +8,8 @@ public class PingDIsplay : MonoBehaviourLex
   
     void FixedUpdate()
     {
-       // pingValueText.text=  LexNetwork.GetPing()+"ms";
+        double time = LexNetwork.Time % 10;
+        pingValueText.text = LexNetwork.GetPing() + "ms \n" + time.ToString("00.00");
         if (LexNetwork.IsMasterClient)
         {
             pingValueText.color = Color.red;

@@ -17,16 +17,16 @@ public class UI_Timer : MonoBehaviour
     private void OnEnable()
     {
         showRemainingTime = GameSession.gameModeInfo.gameMode == GameMode.TeamCP;
-        startTime = LexNetwork.NetTime;
+        startTime = LexNetwork.Time;
         if (showRemainingTime) { 
-            endTime = LexNetwork.NetTime + GameField_CP.timeout;
+            endTime = LexNetwork.Time + GameField_CP.timeout;
         }
     }
 
 
     private void FixedUpdate()
     {
-        double curr = LexNetwork.NetTime;
+        double curr = LexNetwork.Time;
         if (showRemainingTime)
         {
             timeText.text = (endTime - curr).ToString("0.0");

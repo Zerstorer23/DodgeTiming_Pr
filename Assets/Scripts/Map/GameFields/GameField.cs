@@ -107,7 +107,7 @@ public class GameField : MonoBehaviourLex
         {
             StopCoroutine(resizeNumerator);
         }
-        startTime = LexNetwork.NetTime;
+        startTime = LexNetwork.Time;
         EventManager.TriggerEvent(MyEvents.EVENT_SEND_MESSAGE, new EventObject() { stringObj = "맵 크기가 줄어듭니다!!" });
         resizeNumerator = ResizeMapByTime();
         StartCoroutine(resizeNumerator);
@@ -139,7 +139,7 @@ public class GameField : MonoBehaviourLex
             mapSpec.yMax = map_transforms[1].position.y;
             mapSpec.xMid = (mapSpec.xMin + mapSpec.xMax) / 2;
             mapSpec.yMid = (mapSpec.yMin + mapSpec.yMax) / 2;
-            elapsedTime = LexNetwork.NetTime - startTime;
+            elapsedTime = LexNetwork.Time - startTime;
             doRoutine = elapsedTime < GameFieldManager.instance.resizeOver;
         }
 
@@ -227,7 +227,7 @@ public class GameField : MonoBehaviourLex
     public virtual Vector3 GetPlayerSpawnPosition(LexPlayer myPlayer)
     {
         int myIndex = LexNetwork.GetMyIndex(myPlayer, GameFieldManager.GetPlayersInField(fieldNo));
-//        Debug.LogWarning(myPlayer+" My Index " + myIndex);
+       Debug.LogWarning(myPlayer+" My Index " + myIndex);
         int x = myIndex % w;
         int y = myIndex / w;
         return GetPoissonPositionNear(x, y);
@@ -262,11 +262,12 @@ public class GameField : MonoBehaviourLex
         float randX = Random.Range(-width / 4, width / 4);
         float randY = Random.Range(-height / 4, height / 4);
         Vector3 location = new Vector3(mapSpec.xMin + xOffset + width * x + randX, mapSpec.yMin + yOffset + height * y + randY);
-      /* Debug.Log("Width units " + width + "," + height);
-        Debug.Log("Offset units " + xOffset + "," + yOffset);
-        Debug.Log("rand units " + randX + "," + randY);
-        Debug.Log("start units " + mapSpec.xMin + "," + mapSpec.yMin);
-        Debug.Log("Indicated location " + location);*/
+        string outstr = "Width units " + width + "," + height + "\n" +
+            "Offset units " + xOffset + "," + yOffset + "\n" +
+            "rand units " + randX + "," + randY + "\n" +
+            "start units " + mapSpec.xMin + "," + mapSpec.yMin + "\n" +
+            "Indicated location " + location;
+        Debug.Log(outstr);
         return location;
     }
 

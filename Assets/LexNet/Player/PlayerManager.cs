@@ -10,12 +10,12 @@ namespace Lex
        static bool prIsMasterClient;
        static LexPlayer prMaster;
        static LexPlayer prLocal = new LexPlayer();
-        public static double NetTime { get; private set; }
+        public static double Time { get; private set; }
 
         public static string NickName { get { return LocalPlayer == null? "ㅇㅇ": LocalPlayer.NickName; } set { LocalPlayer.NickName = value; } }
 
         public static bool IsConnected { get { return prIsConnected; } private set { prIsConnected = value; } }
-        public static bool IsMasterClient { get { return useLexNet ? prIsMasterClient : LexNetwork.IsMasterClient; } private set { prIsMasterClient = value; } }
+        public static bool IsMasterClient { get; private set; }
         public static LexPlayer[] PlayerList { get { return GetPlayerList(); } }
         public static LexPlayer[] PlayerListOthers { get { return GetPlayerListOthers(); } }
         public static int PlayerCount { get { return GetPlayerCount(); } }

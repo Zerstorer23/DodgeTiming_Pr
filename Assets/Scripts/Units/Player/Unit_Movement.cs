@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Unit_Movement :MonobehaviourLexSerialised
+public class Unit_Movement :MonoBehaviourLex
 {
     public float moveSpeed = 8f;
     LexView pv;
@@ -16,8 +16,7 @@ public class Unit_Movement :MonobehaviourLexSerialised
     public Unit_AutoDrive autoDriver;
     [SerializeField] internal GameObject directionIndicator;
     Transform networkPosIndicator;
-
-    Queue<TimeVector> positionQueue = new Queue<TimeVector>();
+    public TransformSynchronisation netTransform;
 
     /*
       패킷은 모두 순서대로 온다
@@ -38,6 +37,7 @@ public class Unit_Movement :MonobehaviourLexSerialised
         moveForce = GetComponent<Movement_Force>();
         myRigidBody = GetComponent<Rigidbody2D>();
         controller = GetComponent<Controller>();
+        netTransform = GetComponent<TransformSynchronisation>();
 
         networkPosIndicator = GameSession.GetInst().networkPos;
     }
@@ -75,8 +75,7 @@ public class Unit_Movement :MonobehaviourLexSerialised
             if (controller.IsLocal) {
                 directionIndicator.SetActive(true);
             }
-            positionQueue = new Queue<TimeVector>();
-            networkPos = transform.position;
+            netTransform.networkPos = transform.position;
         }
     }
     // Update is called once per frame
@@ -88,7 +87,6 @@ public class Unit_Movement :MonobehaviourLexSerialised
         Move(Time.deltaTime);
         DequeuePositions();
         UpdateDirection();
-        WriteSync();
     }
     public float GetMovementSpeed() => moveSpeed * buffManager.GetBuff(BuffType.MoveSpeed);
     void CheckAutoToggle() {
@@ -130,8 +128,18 @@ public class Unit_Movement :MonobehaviourLexSerialised
 
         Vector3 moveDirection = autoDriver.lastEvaluatedVector * moveSpeedFinal;
         moveDirection = moveForce.AdjustForce(moveDirection);
-        Vector3 newPosition = ClampPosition(networkPos, moveDirection);   
+        Vector3 newPosition = ClampPosition(netTransform.networkPos, moveDirection);   
         EnqueuePosition(newPosition);
+    }
+
+    private void EnqueuePosition(Vector3 newPosition)
+    {
+        lastVector = newPosition - oldPosition;
+        netTransform.EnqueueLocalPosition(newPosition, Quaternion.identity);
+        if (!controller.IsBot)
+        {
+            networkPosIndicator.position = newPosition;
+        }
     }
 
     private void MoveByInput(float moveSpeedFinal)
@@ -141,33 +149,13 @@ public class Unit_Movement :MonobehaviourLexSerialised
         var moveDirection = new Vector3(deltaX, deltaY);
         moveDirection = moveForce.AdjustForce(moveDirection);
 
-        Vector3 newPosition = ClampPosition(networkPos, moveDirection);////new Vector3(networkPos.x +  deltaX, networkPos.y + deltaY, 0f));
-
+        Vector3 newPosition = ClampPosition(netTransform.networkPos, moveDirection);////new Vector3(networkPos.x +  deltaX, networkPos.y + deltaY, 0f));
         EnqueuePosition(newPosition);
+       
 
     }
 
-    void EnqueuePosition(Vector3 newPosition)
-    {
-        if (newPosition != oldPosition)
-        {
-            lastVector = newPosition - oldPosition;
-            networkPos = newPosition;
-            networkExpectedTime = LexNetwork.NetTime + GameSession.STANDARD_PING;
-            oldPosition = newPosition;
-            if (LexNetwork.PlayerCount == 1) {
-                positionQueue.Enqueue(new TimeVector(networkExpectedTime, networkPos));
-            }
-        }
-        else if (positionQueue.Count <= 0)
-        {
-            networkPos = transform.position;
-            networkExpectedTime = LexNetwork.NetTime + GameSession.STANDARD_PING;
-        }
-        if (!controller.IsBot) {
-            networkPosIndicator.position = newPosition;
-        }
-    }
+
     Vector3 ClampPosition(Vector3 position, Vector3 direction) {
        // direction = CheckWallContact_Slide(position, direction);
         float newX = Mathf.Clamp(position.x + direction.x, mapSpec.xMin, mapSpec.xMax);
@@ -208,25 +196,8 @@ public class Unit_Movement :MonobehaviourLexSerialised
 
     void DequeuePositions()
     {
-
-        TimeVector tv = null;
-        int skip = 0;
-        while (positionQueue.Count > 0 && positionQueue.Peek().IsExpired())
-        {
-            tv = positionQueue.Dequeue();
-            skip++;
-        }
-        if (tv != null)
-        {
-            FlipBody(tv.position.x - transform.position.x);
-            transform.position = tv.position;
-            //  lastDequeueTime = LexNetwork.NetTime;
-            // lastDequeuedPosition = tv.position;
-        }
-        else {
-            transform.position = ClampPosition(transform.position , Vector3.zero);
-        }
-
+        FlipBody(netTransform.xDelta);
+        transform.position = ClampPosition(transform.position , Vector3.zero);
     }
     void FlipBody(float xDelta) {
         Vector3 localScale = unitPlayer.charBody.transform.localScale;
@@ -269,7 +240,7 @@ public class Unit_Movement :MonobehaviourLexSerialised
     }
     public void TeleportPosition(Vector3 newPosition) {
         transform.position = newPosition;
-        networkPos = newPosition;
+        netTransform.networkPos = newPosition;
     }
 
     public float GetAim()
@@ -285,23 +256,28 @@ public class Unit_Movement :MonobehaviourLexSerialised
             return aimAngle;
         }
     }
-    public double networkExpectedTime;
+   /*
+    * TODO MEMO
+    * transform syunc 투사체와 통합함
+    * public double networkExpectedTime;
     public Vector3 networkPos;
     public double lastSendTime;
 
-    // private Quaternion currRot;
-/*    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    Vector3 oldPos;
+    public override void OnSyncView(LexStream stream)
     {
         //통신을 보내는 
-        if (stream.IsWriting)
+        if (IsWriting)
         {
-            if (networkExpectedTime != lastSendTime)
+            //if (networkExpectedTime != lastSendTime)
+            if(oldPos != networkPos)
             {
                 positionQueue.Enqueue(new TimeVector(networkExpectedTime, networkPos));
+                stream.SendNext(networkPos);
+                stream.SendNext(networkExpectedTime);
+                lastSendTime = networkExpectedTime;
+                oldPos = networkPos;
             }
-            stream.SendNext(networkPos);
-            stream.SendNext(networkExpectedTime);
-            lastSendTime = networkExpectedTime;
         }
 
         //클론이 통신을 받는 
@@ -309,45 +285,19 @@ public class Unit_Movement :MonobehaviourLexSerialised
         {
             //tcp
             //udp
-            Vector3 position = (Vector3)stream.ReceiveNext();
-            double netTime = (double)stream.ReceiveNext();
+            Vector3 position = stream.ReceiveNext<Vector3>();// parameters[0];
+            double netTime = stream.ReceiveNext<double>(); //(double)parameters[1];
             TimeVector tv = new TimeVector(netTime, position);
             positionQueue.Enqueue(tv);
         }
-    }
-*/
-    public override void OnSyncView(params object[] parameters)
-    {
-        //통신을 보내는 
-        if (isWriting)
-        {
-            if (networkExpectedTime != lastSendTime)
-            {
-                positionQueue.Enqueue(new TimeVector(networkExpectedTime, networkPos));
-            }
-            object[] obj = new object[2];
-            obj[0] = networkPos;
-            obj[1] = networkExpectedTime;
-            lastSendTime = networkExpectedTime;
-            PushSync(obj);
-        }
+    }*/
 
-        //클론이 통신을 받는 
-        else
-        {
-            //tcp
-            //udp
-            Vector3 position = (Vector3)parameters[0];
-            double netTime = (double)parameters[1];
-            TimeVector tv = new TimeVector(netTime, position);
-            positionQueue.Enqueue(tv);
-        }
-    }
 }
 
 
 public class TimeVector
 {
+    public static bool useTimeSync = false;
     public double timestamp;
     public Vector3 position;
     public Quaternion quaternion;
@@ -364,7 +314,8 @@ public class TimeVector
     }
     public bool IsExpired()
     {
-        return (timestamp <= LexNetwork.NetTime);
+        if (!useTimeSync) return true;
+        return (timestamp <= LexNetwork.Time);
     }
     public override string ToString() {
         return timestamp + " : " + position;
