@@ -51,22 +51,21 @@ public class BuffObject : MonoBehaviourLex
         objectName = buffConfig.buff_name;
         originalBuffImage = buffConfig.spriteImage;
     }
-
     private void OnFieldFinished(EventObject obj)
     {
         if (obj.intObj != fieldNumber) return;
         if (pv.IsMine)
         {
-            if (deathRoutine != null) StopCoroutine(deathRoutine);    
-        
+            if (deathRoutine != null) StopCoroutine(deathRoutine);
             LexNetwork.Destroy(pv);
         }
     }
 
     private void OnDisable()
     {
+        res = 0;
         status = BuffObjectStatus.Starting;
-        EventManager.StopListening(MyEvents.EVENT_GAME_FINISHED, OnFieldFinished);
+        EventManager.StopListening(MyEvents.EVENT_FIELD_FINISHED, OnFieldFinished);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

@@ -152,7 +152,7 @@ namespace Lex
             }
             return paramQueue.Count + " / " + msg;
         }
-        public string PrintOut(MessageInfo messageInfo) {
+        public void PrintOut(MessageInfo messageInfo) {
            // Debug.LogWarning(Peek());
             try
             {
@@ -170,7 +170,7 @@ namespace Lex
                     case MessageInfo.SyncVar:
                         viewid = list[i++];
                         outstr += " on " + viewid;
-                        break;
+                        return;
                     case MessageInfo.Chat:
                         outstr += " says " + list[i++];
                         break;
@@ -192,20 +192,22 @@ namespace Lex
                     case MessageInfo.ServerRequest:
                         break;
                     case MessageInfo.ServerCallbacks:
-                        outstr += PrintCallback(list, i);
+                        string callback = PrintCallback(list, i);
+                        outstr += callback;
+                        if (callback == null) return;
                         break;
                 }
-                return outstr;
+                LexDebug.Log(outstr);
             }
             catch (Exception e) {
                 Debug.LogWarning(e);
             }
-            return "";
         }
         string PrintCallback(string[] list, int i)
         {
             int cbtNum = Int32.Parse(list[i++]);
             LexCallback callbackType = (LexCallback)cbtNum;
+            if (callbackType == LexCallback.Ping_Received) return null;
             string outstr = " " + callbackType;
             return outstr;
         }

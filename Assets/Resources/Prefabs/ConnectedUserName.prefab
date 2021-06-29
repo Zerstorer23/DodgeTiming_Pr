@@ -134,7 +134,6 @@ MonoBehaviour:
     actorID: 30
   ownerActorNr: 30
   creatorActorNr: 30
-  serializedView: {fileID: 0}
 --- !u!1 &2777318381742102871
 GameObject:
   m_ObjectHideFlags: 0

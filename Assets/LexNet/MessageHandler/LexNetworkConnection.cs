@@ -19,6 +19,7 @@
         private static Mutex sendMutex = new Mutex();
         private static Mutex receiveMutex = new Mutex();
 
+        public Queue<string> suspendedMessages = new Queue<string>();
         Queue<string> receivedQueue = new Queue<string>();
         Queue<LexNetworkMessage> sendQueue = new Queue<LexNetworkMessage>();
         Thread listenThread;
@@ -55,6 +56,9 @@
                 Debug.Log(e);
                 return false;
             }
+            suspendedMessages.Clear();
+            receivedQueue.Clear();
+            sendQueue.Clear();
 
             listenThread = new Thread(new ThreadStart(ListenMessage));
             listenThread.IsBackground = true;
@@ -88,7 +92,7 @@
         {
             //MUTEX
             sendMutex.WaitOne();
-            //Debug.Log(netMessage.PeekSendMessage());
+            LexDebug.Log(netMessage.PeekSendMessage());
             sendQueue.Enqueue(netMessage);
             sendMutex.ReleaseMutex();
             //MUTEX
@@ -173,6 +177,7 @@
             while (receivedQueue.Count > 0)
             {
                 string message = receivedQueue.Dequeue();
+             
                 messageHandler.HandleMessage(message);//
             }//분리하는게 좋을ㄷㅡㅅ
             receiveMutex.ReleaseMutex();
@@ -180,8 +185,16 @@
 
         public void Disconnect()
         {
-            stayConnected = false;
-            mySocket.Close();//소켓 닫기
+            try
+            {
+
+                stayConnected = false;
+                mySocket.Shutdown(SocketShutdown.Both);
+                mySocket.Close();//소켓 닫기
+            }
+            catch (Exception e) {
+                Debug.LogWarning(e);
+            }
         }
 
 

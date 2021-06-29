@@ -162,7 +162,7 @@ public class Unit_AutoDrive : MonoBehaviour
         Vector3 targetPosition = targetEnemy.transform.position;
         Vector3 sourcePosition = transform.position;
         aimAngle = machine.DiffuseAim (GameSession.GetAngle(sourcePosition, targetPosition));
-        Debug.LogWarning("Aim " + aimAngle+" original "+GameSession.GetAngle(sourcePosition, targetPosition));
+ //       Debug.LogWarning("Aim " + aimAngle+" original "+GameSession.GetAngle(sourcePosition, targetPosition));
         directionIndicator.transform.localPosition = GetAngledVector(aimAngle, 1.4f); // new Vector3(dX, dY);
         directionIndicator.transform.localRotation = Quaternion.Euler(0, 0, aimAngle);
         return aimAngle;

@@ -51,7 +51,6 @@ public class BulletSpawner : MonoBehaviourLex
         EventManager.StartListening(MyEvents.EVENT_GAME_FINISHED, OnGameEnd);
         EventManager.StartListening(MyEvents.EVENT_FIELD_FINISHED, OnGameEnd);
         isDead = false;
-        Debug.LogWarning(gameObject.name + " v " + lexView.ViewID);
         fieldNumber = (int)pv.InstantiationData[0];
         transform.SetParent(GameSession.GetBulletHome());
     }

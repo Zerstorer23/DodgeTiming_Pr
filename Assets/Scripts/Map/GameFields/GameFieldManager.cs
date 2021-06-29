@@ -92,7 +92,12 @@ public partial class GameFieldManager : MonoBehaviourLex
             return prGameFieldManager;
         }
     }
-    public static void SetGameMap(GameMode mode) {
+    /*
+     TUrned into RPC
+     */
+    [LexRPC]
+    public void SetGameMap(int m) {
+        GameMode mode = (GameMode)m;
         gameFields.Clear();
         switch (mode)
         {
@@ -100,15 +105,15 @@ public partial class GameFieldManager : MonoBehaviourLex
             case GameMode.TEAM:
             case GameMode.PVE:
                 SetUpSingleField(instance.singleField);
-                instance.AssignSingleRoom(LexNetwork.PlayerList);
+                AssignSingleRoom(LexNetwork.PlayerList);
                 break;
             case GameMode.TeamCP:
                 SetUp_CP();
-                instance.AssignSingleRoom(LexNetwork.PlayerList);
+                AssignSingleRoom(LexNetwork.PlayerList);
                 break;
             case GameMode.Tournament:
                 SetUpTournament();
-                instance.AssignMyRoom(LexNetwork.GetHumanPlayers(), 2);
+                AssignMyRoom(LexNetwork.GetHumanPlayers(), 2);
                 break;
         }
     }

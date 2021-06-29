@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using static Lex.LexNetwork_MessageHandler;
 
@@ -17,7 +18,7 @@ namespace Lex
 
         public static string ServerAddress;
         public static bool connected;
-
+        public LexLogLevel logLevel;
         public static LexNetworkConnection networkConnector = new LexNetworkConnection();
         private static LexNetwork prNetwork;
         [SerializeField] [ReadOnly] bool amMaster;
@@ -53,7 +54,6 @@ namespace Lex
                     if (localOnly)
                     {
                         LexViewManager.ReleaseViewID(view);
-                        Destroy(view.gameObject);
                     }
                     else
                     {
@@ -116,6 +116,7 @@ namespace Lex
             networkConnector.Disconnect();
         }
 
+
         #region instantiation
         public static GameObject Instantiate(string prefabName, Vector3 position, Quaternion quaternion, byte group = 0, object[] parameters = null)
         {
@@ -140,11 +141,7 @@ namespace Lex
             {
                 return 0;
             }
-            if (Time > instance.lastReceivedPing + instance.pingPeriodInSec)
-            {
-                instance.SendPing();
-            }
-            double ping = (instance.lastReceivedPing - instance.lastSentPing) * 1000;
+            double ping = (instance.lastCalculatedPing) * 1000;
             return (int)ping;
         }
 
@@ -279,14 +276,21 @@ namespace Lex
                 player.ReceiveBotProperty(key, value);//TODO
             }
         }
-//TODO Wrap Photon Player on joins
 
         private void Awake()
         {
             //  dict.Add("Hi", "A");
             // Debug.Log(dict["Hi"]);
             DontDestroyOnLoad(gameObject);
+            LexDebug.LogLevel = logLevel;
         }
+      
+        private void OnEnable()
+        {
+            DoTimeStartUp();
+        }
+      
+
         private void Update()
         {
             Time += UnityEngine.Time.deltaTime;

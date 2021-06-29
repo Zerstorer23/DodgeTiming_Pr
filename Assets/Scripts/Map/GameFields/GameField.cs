@@ -70,7 +70,9 @@ public class GameField : MonoBehaviourLex
 
         LexPlayer winner = stat.lastSurvivor;
         Debug.Log("GAME FISNISHED /  winner "+winner);
-        GameFieldManager.pv.RPC("NotifyFieldWinner", fieldNo, winner.uid);
+        if (LexNetwork.IsMasterClient) {
+            GameFieldManager.pv.RPC("NotifyFieldWinner", fieldNo, winner.uid);
+        }
        // NotifyFieldWinner(winner);
     }
 

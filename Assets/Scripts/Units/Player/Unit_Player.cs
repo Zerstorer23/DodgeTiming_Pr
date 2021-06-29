@@ -88,7 +88,7 @@ public class Unit_Player : MonoBehaviourLex
         int maxLife = (int)pv.InstantiationData[1];
     
         fieldNo = (int)pv.InstantiationData[2];
-
+        LexDebug.Log(gameObject.name+ "Received field " + fieldNo);
         bool isBot = (bool)pv.InstantiationData[3];
         string uid = (string)pv.InstantiationData[4];
         controller.SetControllerInfo(isBot, uid);

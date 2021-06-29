@@ -34,7 +34,7 @@
                     Handle_Receive_ServerTimeModification(netMessage);
                     break;
                 case LexCallback.Ping_Received:
-                    Handle_Receive_Ping();
+                    Handle_Receive_Ping(netMessage);
                     break;
                 case LexCallback.Disconnected:
                     Handle_ConnectionLost();
@@ -52,9 +52,11 @@
             }
         }
 
-        private void Handle_Receive_Ping()
+        private void Handle_Receive_Ping(LexNetworkMessage netMessage)
         {
-            LexNetwork.instance.ReceivePing();
+            double remoteServerTime = double.Parse(netMessage.GetNext()) / 1000d;
+
+            LexNetwork.instance.ReceivePing(remoteServerTime);
         }
 
         private void Handle_Receive_SetMasterClient(int sentActorNumber, LexNetworkMessage netMessage)
@@ -96,6 +98,7 @@
             Debug.Log("Received RPCs and finished join");
             Debug.Assert(LexNetwork.IsConnected == false, "Connected but received rpc?");
             LexNetwork.instance.SetConnected(true);
+
             NetworkEventManager.TriggerEvent(LexCallback.OnLocalPlayerJoined, null);
         }
 
@@ -118,20 +121,20 @@
             //Player Info = actorID, isMaster, customprop[num prop]
             //Load Room
             int numHash = Int32.Parse(netMessage.GetNext());
-            Debug.Log("Number of room hash : " + numHash);
+            LexDebug.Log("Number of room hash : " + numHash);
             for (int count = 0; count < numHash; count++)
             {
                 int key = Int32.Parse(netMessage.GetNext());
                 string typeName = netMessage.GetNext();
                 string value = netMessage.GetNext();
                 object hontoValue = LexNetwork_MessageHandler.ParserAParameter(typeName, value);
-                Debug.Log("room hash : " + (Property)key + " / " + hontoValue);
+                LexDebug.Log("room hash : " + (Property)key + " / " + hontoValue);
                 LexNetwork.CustomProperties.Add(key, hontoValue);
             }
 
             //Load Players
             int numPlayers = Int32.Parse(netMessage.GetNext());
-            Debug.Log("Number of Players: " + numPlayers);//첫번째는무조건 로컬
+            LexDebug.Log("Number of Players: " + numPlayers);//첫번째는무조건 로컬
                                                           //LexPlayer localPlayer = new LexPlayer(true, netMessage);
 
             for (int count = 0; count < numPlayers; count++)
@@ -147,7 +150,7 @@
             long serverTime = long.Parse(netMessage.GetNext());
             LexNetwork.instance.InitServerTime(serverTime);
             //.1 소켓접속, 2. 룸정보 받기 , 3. 플레이어 받기, 4. 서버시간 받기
-            RequestServerTimeModification(true, false);
+           // RequestServerTimeModification(true, false);
             //5.서버시간변경요청
         }
 
@@ -169,7 +172,7 @@
             int targetPlayer = Int32.Parse(netMessage.GetNext());
             Debug.Assert(targetPlayer == LexNetwork.LocalPlayer.actorID, "Received wrong message");
             long modValue = long.Parse(netMessage.GetNext());
-            Debug.Log("Received servertime / " + modValue);
+            LexDebug.Log("Received servertime / " + modValue);
             int remain = LexNetwork.instance.ModifyServerTime(modValue);
             if (remain > 0)
             {

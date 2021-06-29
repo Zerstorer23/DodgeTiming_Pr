@@ -2013,7 +2013,6 @@ MonoBehaviour:
     actorID: 0
   ownerActorNr: 0
   creatorActorNr: 0
-  serializedView: {fileID: 0}
 --- !u!114 &6587199216658838513
 MonoBehaviour:
   m_ObjectHideFlags: 0

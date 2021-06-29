@@ -175,40 +175,7 @@ namespace Lex
                 entry.UpdateOwnership();
             }
         }
-        internal void InitServerTime(long time)
-        {
-            Time = (double)time / 1000; //long is in mills
-            Debug.Log("서버 시작시간 : " + Time);
-        }
-        internal int ModifyServerTime(long timeValue)
-        {
-            double timeInMills = (double)timeValue / 1000;
-            int remainingRuns = timeHandler.Append(timeInMills);
-            if (remainingRuns <= 0)
-            {
-                timeInMills = timeHandler.Finalise();
-                Time += timeInMills;
-                Debug.Log("Modified time : " + timeInMills);
-            }
-            return remainingRuns;
-        }
-
-        double lastSentPing = 0;
-        double lastReceivedPing = 0;
-        double pingPeriodInSec = 5;
-        public void SendPing()
-        {
-            lastSentPing = Time;
-            LexNetworkMessage netMessage = new LexNetworkMessage();
-            netMessage.Add(LocalPlayer.actorID);
-            netMessage.Add(MessageInfo.ServerRequest);
-            netMessage.Add(LexRequest.Ping);
-            networkConnector.EnqueueAMessage(netMessage);
-        }
-        public void ReceivePing()
-        {
-            lastReceivedPing = Time;
-        }
+      
         internal void SetConnected(bool v)
         {
             Debug.Log("Connected : " + v);

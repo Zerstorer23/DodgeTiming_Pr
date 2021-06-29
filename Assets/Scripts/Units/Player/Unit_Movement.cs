@@ -297,7 +297,7 @@ public class Unit_Movement :MonoBehaviourLex
 
 public class TimeVector
 {
-    public static bool useTimeSync = false;
+    public static bool useTimeSync = true;
     public double timestamp;
     public Vector3 position;
     public Quaternion quaternion;

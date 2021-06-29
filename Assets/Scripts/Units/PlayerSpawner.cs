@@ -29,7 +29,7 @@ public class PlayerSpawner : MonoBehaviour
     public void StartEngine()
     {
         var roomHash = LexNetwork.CustomProperties;
-        int livesIndex = (int)roomHash.Get<int>(Property.PlayerLives);
+        int livesIndex = roomHash.Get<int>(Property.PlayerLives);
         maxLives = UI_MapOptions.lives[livesIndex];
 
         SpawnLocalPlayer();
@@ -69,6 +69,12 @@ public class PlayerSpawner : MonoBehaviour
         }
         else
         {
+            /*
+             TODO MEMO 난입판정이 다름..
+             */
+            var playerHash = new LexHashTable();
+            playerHash.Add(Property.Character, CharacterType.NONE);
+            localPlayer.SetCustomProperties(playerHash);
             //  LexNetwork.NickName = UI_ChangeName.default_name;
             ChatManager.SendNotificationMessage(LexNetwork.NickName + " 님이 난입했습니다.");
             MainCamera.FocusOnField(true);

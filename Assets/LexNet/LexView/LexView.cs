@@ -117,14 +117,14 @@ namespace Lex
         //1~9999 Queue에 등록
         //remove된iD queue에 추가
         //dycjdgks queue에서 삭제
-        public MonobehaviourLexSerialised serializedView;
+       [NonSerialized] public MonobehaviourLexSerialised serializedView;
         private void Awake()
         {
             //1. 시점 잡고
             //2. 에디터에서 바꾸면 이제 프로그램의 권한을 넘어가버림
             //3. 수정을 아예 안한 오브젝트는 플레이시 유지되지
             // ->수정을 막는다.
-            // 
+    
             serializedView = GetComponent<MonobehaviourLexSerialised>();//TODO 여러개일수 있음
             if (IsSceneView && serializedView != null) {
                 Debug.LogWarning("Sceneview with serialized view, everyone controls writing");
@@ -133,7 +133,11 @@ namespace Lex
         }
         private void Start()
         {
-
+            // 
+            /*if (IsSceneView)
+            {
+                LexDebug.Log(gameObject.name + " = " + ViewID);
+            }*/
         }
         public void ReceiveSerializedVariable(object[] parameters)
         {

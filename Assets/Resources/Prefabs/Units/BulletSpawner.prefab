@@ -157,7 +157,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8877c68fba97df84f8ce932cdb24f2e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controllerType: 0
   uid: 
   viewID: -1
   prViewType: 0
@@ -167,4 +166,3 @@ MonoBehaviour:
     actorID: 0
   ownerActorNr: 0
   creatorActorNr: 0
-  serializedView: {fileID: 0}

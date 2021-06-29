@@ -36,12 +36,12 @@ public class UI_PlayerLobbyManager : MonoBehaviourLex
         var playerHash = new LexHashTable();
         //TODO
         playerHash.Add(Property.Team, Team.HOME);
-        playerHash.Add(Property.Character, CharacterType.NONE);
         playerHash.Add(Property.RandomSeed, UnityEngine.Random.Range(0, 133));
-        LexNetwork.LocalPlayer.SetCustomProperties(playerHash);
         Debug.Log("Game started? " + mapOptions.GetGameStarted());
         if (!mapOptions.GetGameStarted())
         {
+            playerHash.Add(Property.Character, CharacterType.NONE);
+            LexNetwork.LocalPlayer.SetCustomProperties(playerHash);
             Debug.Log("Instantiate after connection");
             InstantiateMyself();
             UpdateReadyStatus();
@@ -49,11 +49,12 @@ public class UI_PlayerLobbyManager : MonoBehaviourLex
         }
         else
         {
-            //난입유저 바로시작
-            GameFieldManager.SetGameMap(GameSession.gameModeInfo.gameMode);
+            LexNetwork.LocalPlayer.SetCustomProperties(playerHash);
+            //난입유저 바로시작 TODO MEMO NO NEED SETGAMEMAP
+            // GameFieldManager.SetGameMap(GameSession.gameModeInfo.gameMode);
             GameFieldManager.ChangeToSpectator();
             Debug.Log("난입세팅끝");
-            StartCoroutine(WaitAndStartGame());
+            StartGame();
         }
     }
 
@@ -220,15 +221,13 @@ public class UI_PlayerLobbyManager : MonoBehaviourLex
         //  Debug.Log("Start requested "+ gameStarted);
         if (gameStarted)
         {
-            GameFieldManager.SetGameMap(GameSession.gameModeInfo.gameMode);
+            GameFieldManager.pv.RPC("SetGameMap",(int)GameSession.gameModeInfo.gameMode);
             Debug.Log("RPC Start game");
             StartGame();
         }
     }
-    IEnumerator WaitAndStartGame() {
-        yield return new WaitForFixedUpdate();
-        StartGame();
-    }
+
+  
     public void StartGame()
     {
         if (localPlayerObject != null)

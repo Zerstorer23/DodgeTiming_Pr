@@ -111,7 +111,7 @@
             }
             else
             {
-                Debug.LogWarning("No view id with " + viewID + " found");
+                LexDebug.LogWarning("No view id with " + viewID + " found");
                 return false;
             }
         }
@@ -131,11 +131,11 @@
             viewDictionary.Remove(lv.ViewID);
             if (lv.IsRoomView)
             {
-                privateViewID_queue.Enqueue(lv.ViewID);
+                roomViewID_queue.Enqueue(lv.ViewID);
             }
             else
             {
-                roomViewID_queue.Enqueue(lv.ViewID);
+                privateViewID_queue.Enqueue(lv.ViewID);
             }
             NetObjectPool.SaveObject(lv.objTag, lv);
         }

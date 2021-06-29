@@ -11,6 +11,8 @@
 
         public void HandleMessage(string str)
         {
+ 
+
             LexNetworkMessage netMessage = new LexNetworkMessage();
             netMessage.Split(str);
             while (netMessage.HasNext())
@@ -19,15 +21,13 @@
                 string signature = netMessage.GetNext();
                 bool isMyPacket = (signature == NET_SIG);
                 if (!isMyPacket) continue;
-   /*             try
-                {*/
+              try
+                {
                  //   Debug.LogWarning("처리중: " + netMessage.Peek());
                     int lengthOfMessages = Int32.Parse(netMessage.GetNext());
                     int sentActorNumber = Int32.Parse(netMessage.GetNext());
                     MessageInfo messageInfo = (MessageInfo)Int32.Parse(netMessage.GetNext());
-                    if (messageInfo != MessageInfo.SyncVar) {
-                        Debug.LogWarning(netMessage.PrintOut(messageInfo));
-                    }
+                    netMessage.PrintOut(messageInfo);
                     switch (messageInfo)
                     {
                         case MessageInfo.RPC:
@@ -54,14 +54,14 @@
                             callbackHandler.ParseCallback(sentActorNumber, netMessage);
                             break;
                     }
-/*                }
+                }
                 catch (Exception e)
                 {
                     Debug.LogWarning("Handle message fatal error");
                     Debug.LogWarning(e.Message);
                     Debug.LogWarning(e.StackTrace);
                     Debug.LogWarning(netMessage.Peek());
-                }*/
+                }
 
 
             }
