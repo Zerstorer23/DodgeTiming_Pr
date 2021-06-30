@@ -15,18 +15,15 @@ namespace Lex
         {
             LexNetworkMessage netMessage = new LexNetworkMessage(LocalPlayer.actorID, (int)MessageInfo.RPC, lv.ViewID, functionName);
             netMessage.EncodeParameters(parameters);
-            Run_RPC(lv, functionName, parameters);
+            LexDebug.Log(netMessage.PeekSendMessage());
             networkConnector.EnqueueAMessage(netMessage);
+            Run_RPC(lv, functionName, parameters);
         }
 
         public void RPC_Receive(int viewID, string functionName, params object[] parameters)
         {
-            if (debugLexNet)
-            {
-                foreach (object obj in parameters) Debug.Log(obj);
-            }
-
             LexView lv = LexViewManager.GetViewByID(viewID);
+            Debug.LogWarning("RPC " + functionName + " on " + viewID + " / " + lv);
             if (!lv) return;
             Run_RPC(lv, functionName, parameters);
         }

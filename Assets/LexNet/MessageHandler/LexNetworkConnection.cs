@@ -92,7 +92,6 @@
         {
             //MUTEX
             sendMutex.WaitOne();
-            LexDebug.Log(netMessage.PeekSendMessage());
             sendQueue.Enqueue(netMessage);
             sendMutex.ReleaseMutex();
             //MUTEX

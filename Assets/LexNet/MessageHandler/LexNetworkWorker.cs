@@ -16,19 +16,6 @@ namespace Lex
         private static Mutex playerDictionaryMutex = new Mutex();
         public LexNetwork_TimeHandler timeHandler = new LexNetwork_TimeHandler();
 
-        private static LexPlayer[] GetPlayerList()
-        {
-            return playerDictionary.Values.ToArray();
-        }
-        private static LexPlayer[] GetPlayerListOthers()
-        {
-            return playerDictionary.Values.OrderBy((x) => x.actorID).Where(x => !x.IsLocal).ToArray();
-        }
-        private static int GetPlayerCount()
-        {
-
-            return playerDictionary.Count ;
-        }
         internal static void PrintStringToCode(string str)
         {
             char[] arr = str.ToCharArray();

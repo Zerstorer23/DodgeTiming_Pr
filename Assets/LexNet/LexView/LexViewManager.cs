@@ -17,11 +17,11 @@
     {
         private static LexViewManager prInstance;
         private static Dictionary<int, LexView> viewDictionary = new Dictionary<int, LexView>();
-        [SerializeField] Text lvText;/*
+       /*
     private static int privateViewID = 0;
     private static int roomViewID = 0;*/
-        private static Queue<int> privateViewID_queue;
-        private static Queue<int> roomViewID_queue;
+        private static Queue<int> privateViewID_queue = new Queue<int>();
+        private static Queue<int> roomViewID_queue = new Queue<int>();
 
         private static Mutex viewMutex = new Mutex();
         static bool init = false;
@@ -38,7 +38,6 @@
                 if (!prInstance)
                 {
                     prInstance = FindObjectOfType<LexViewManager>();
-                    Init();
                 }
                 return prInstance;
             }
@@ -47,12 +46,15 @@
         {
             Init();
         }
+/*        public static void DoReset() {
+           Init();
+        }*/
         private static void Init()
         {
-            if (init) return;
-            init = true;
-            privateViewID_queue = new Queue<int>();
-            roomViewID_queue = new Queue<int>();
+            privateViewID_queue.Clear();
+            roomViewID_queue.Clear();
+            viewDictionary.Clear();
+            Debug.LogWarning("VC: " + viewDictionary.Count);
             LexView[] sceneViews = Resources.FindObjectsOfTypeAll<LexView>();// FindObjectsOfType<LexView>();
             instance.nextPublicViewID = 0;
             for (int i = 0; i < LexNetwork.MAX_VIEW_IDS; i++)
@@ -61,7 +63,7 @@
 
                 if (i < sceneViews.Length)
                 {
-                    if (sceneViews[i].ViewID == -1)
+                    if (sceneViews[i].ViewID == -1 || !sceneViews[i].IsSceneView)
                         continue;
                     AddViewtoDictionary(sceneViews[i]);
                     instance.nextPublicViewID++;

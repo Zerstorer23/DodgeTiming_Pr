@@ -44,9 +44,9 @@ public class GameModeConfig : ScriptableObject
         switch (GameSession.gameModeInfo.gameMode)
         {
             case GameMode.PVP:
-                return (LexNetwork.PlayerCount <= 1);
+                return (LexNetwork.HumanPlayerCount <= 1); ;
             case GameMode.TEAM:
-                return (LexNetwork.PlayerCount <= 2);
+                return (LexNetwork.HumanPlayerCount <= 2);
             case GameMode.Tournament:
                 return false;
             case GameMode.PVE:

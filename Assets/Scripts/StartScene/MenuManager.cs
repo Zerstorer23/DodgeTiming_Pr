@@ -34,7 +34,7 @@ public class MenuManager : MonoBehaviourLexCallbacks
         GooglePlayManager.ShowLeaderBoard();
     }
     public void InitRoomSettings() {
-        if (LexNetwork.IsMasterClient && LexNetwork.PlayerCount == 1)
+        if (LexNetwork.IsMasterClient && LexNetwork.HumanPlayerCount == 1)
         {
             var hash = UI_MapOptions.GetInitOptions();
             LexNetwork.SetRoomCustomProperties(hash);

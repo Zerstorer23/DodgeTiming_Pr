@@ -257,13 +257,14 @@ public partial class IEvaluationMachine
         return directionToTarget * multiplier;
     }
 
-    protected Vector3 KeepConstantDistance(Vector3 directionToTarget, float distance, float preferredDistance, bool approachToPreferredDistance) {
+    protected Vector3 KeepConstantDistance(Vector3 directionToTarget, float distance, float preferredDistance, bool approachToPreferredDistance)
+    {
         float multiplier = 0;
-        if (distance < preferredDistance)
+        if (distance < (preferredDistance - 0.5f))
         {
             multiplier = -GetMultiplier(distance / 5f);
         }
-        else if (distance > preferredDistance)
+        else if (distance > (preferredDistance + 0.5f))
         {
             multiplier = GetMultiplier(distance / 5f);
         }
@@ -318,7 +319,7 @@ public partial class IEvaluationMachine
             return dir;
         }
 
-        if (pMove.moveSpeed > 15f)//player.movement.GetMovementSpeed())
+        if (pMove.moveSpeed > player.movement.GetMovementSpeed())
         {
             if (!IsApproaching(pMove, distance)) return Vector3.zero;
             /*   

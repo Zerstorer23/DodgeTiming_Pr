@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Lex
 {
@@ -17,11 +19,76 @@ namespace Lex
         public static bool IsConnected { get { return prIsConnected; } private set { prIsConnected = value; } }
         public static bool IsMasterClient { get; private set; }
         public static LexPlayer[] PlayerList { get { return GetPlayerList(); } }
+        public static LexPlayer[] HumanPlayerList { get { return playerDictionary.Values.OrderBy((x) => x.actorID).Where(x => x.IsHuman).ToArray(); } }
         public static LexPlayer[] PlayerListOthers { get { return GetPlayerListOthers(); } }
+        public static LexPlayer[] HumanPlayerListOthers { get { return playerDictionary.Values.OrderBy((x) => x.actorID).Where(x => !x.IsLocal && x.IsHuman).ToArray(); } }
         public static int PlayerCount { get { return GetPlayerCount(); } }
+        public static int HumanPlayerCount { get
+            {
+                return playerDictionary.Values.Where(x => x.IsHuman).Count();
+            } }
 
         public static LexPlayer MasterClient { get; private set; }//{ get { return useLexNet ? prMaster : prMaster == null ? null : GetPlayerByID(prMaster.uid); } private set { prMaster = value; } }
         public static LexPlayer LocalPlayer { get { return prLocal; } private set { prLocal = value; } }//{ get { return useLexNet ? prLocal : prLocal == null ? null : GetPlayerByID(prLocal.uid); } private set { prLocal = value; } }
+        private static LexPlayer[] GetPlayerList()
+        {
+            return playerDictionary.Values.OrderBy((x) => x.actorID).ToArray();
+        }
+        private static LexPlayer[] GetPlayerListOthers()
+        {
+            return playerDictionary.Values.OrderBy((x) => x.actorID).Where(x => !x.IsLocal).ToArray();
+        }
+        private static int GetPlayerCount()
+        {
+            return playerDictionary.Count;
+        }
+
+        internal static void KickEveryoneElse()
+        {
+            if (!IsMasterClient) return;
+            instance.lexView.RPC("KickHelper");
+        }
+        [LexRPC]
+        void KickHelper()
+        {
+            if (IsMasterClient) return;
+            Disconnect();
+            Application.Quit();
+        }
+        internal static void ReconnectEveryone()
+        {
+            if (!IsMasterClient) return;
+            instance.lexView.RPC("ReconnectHelper");
+        }
+        [LexRPC]
+        void ReconnectHelper() {
+            LexNetwork_ResetHelper.StartRoutine(ReconnectRoutine(IsMasterClient, gameObject));
+        }
+        IEnumerator ReconnectRoutine(bool IsMaster, GameObject netManager) {
+            EventManager.TriggerEvent(MyEvents.EVENT_SEND_MESSAGE, new EventObject("게임오류로 인해 강제리셋이 진행됩니다."));
+            if (IsMaster)
+            {
+                yield return new WaitForSeconds(1f);
+                Disconnect();
+                yield return new WaitForSeconds(1f);
+                /*                SceneManager.MoveGameObjectToScene(netManager, SceneManager.GetSceneAt(0));*/
+                GameObject.Destroy(netManager);
+                yield return new WaitForSeconds(1f);
+                SceneManager.LoadScene(0);
+
+            }
+            else
+            {
+                Disconnect();
+                yield return new WaitForSeconds(2f);
+                /*                SceneManager.MoveGameObjectToScene(netManager, SceneManager.GetSceneAt(0));*/
+                GameObject.Destroy(netManager);
+                
+                yield return new WaitForSeconds(1f);
+                SceneManager.LoadScene(0);
+            }
+            Debug.LogWarning("Load scene finish");
+        }
 
         internal static void AddBotPlayer(LexPlayer botPlayer)
         {
@@ -112,13 +179,12 @@ namespace Lex
                 playerDictionary.Remove(s);
             }
         }
-        internal static LexPlayer GetRandomPlayerExceptMe()
+        internal static LexPlayer GetRandomHumanExceptMe()
         {
-            LexPlayer[] players = LexNetwork.PlayerListOthers;
+            LexPlayer[] players = HumanPlayerListOthers;
             if (players.Length > 0)
             {
                 return players[UnityEngine.Random.Range(0, players.Length)];
-
             }
             else
             {

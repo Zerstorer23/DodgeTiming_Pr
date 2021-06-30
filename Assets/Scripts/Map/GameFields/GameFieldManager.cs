@@ -191,7 +191,7 @@ public partial class GameFieldManager : MonoBehaviourLex
                     break;
             }
             GooglePlayManager.IncrementEvent(GPGSIds.event_total_games_played, 1);
-            GooglePlayManager.IncrementEvent(GPGSIds.event_total_users_connected, (uint)LexNetwork.PlayerCount);
+            GooglePlayManager.IncrementEvent(GPGSIds.event_total_users_connected, (uint)LexNetwork.HumanPlayerCount);
         }
     }
 

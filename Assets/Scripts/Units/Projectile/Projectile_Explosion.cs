@@ -8,6 +8,7 @@ public class Projectile_Explosion : MonoBehaviourLex
 {
     Projectile_DamageDealer damageDealer;
     public bool attackMyTeam = false;
+     bool exploded = false;
     private void Awake()
     {
         damageDealer = GetComponent<Projectile_DamageDealer>();
@@ -41,7 +42,10 @@ public class Projectile_Explosion : MonoBehaviourLex
         }
     }
     float radius = 2.25f;
-    void DoExplosion() {
+    void DoExplosion()
+    {
+        if (exploded) { return; }
+        exploded = true;
         Collider2D[] collisions = Physics2D.OverlapCircleAll(transform.position,radius, LayerMask.GetMask("Player", "Projectile"));
         for (int i = 0; i < collisions.Length; i++)
         {
@@ -68,9 +72,13 @@ public class Projectile_Explosion : MonoBehaviourLex
 
         }
     }
-/*    private void OnDrawGizmos()
+    private void OnDisable()
     {
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, radius);
-    }*/
+        exploded = false;
+    }
+    /*    private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, radius);
+        }*/
 }

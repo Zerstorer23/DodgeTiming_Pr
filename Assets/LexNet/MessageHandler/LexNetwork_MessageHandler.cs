@@ -58,8 +58,7 @@
                 catch (Exception e)
                 {
                     Debug.LogWarning("Handle message fatal error");
-                    Debug.LogWarning(e.Message);
-                    Debug.LogWarning(e.StackTrace);
+                    Debug.LogWarning(e);
                     Debug.LogWarning(netMessage.Peek());
                 }
 
@@ -179,7 +178,7 @@
             return param;
         }
         internal static object ParserAParameter(string typename, string dataInfo)
-        {            
+        {
             switch (typename)
             {
                 case "NULL":

@@ -63,7 +63,6 @@ public class BuffObject : MonoBehaviourLex
 
     private void OnDisable()
     {
-        res = 0;
         status = BuffObjectStatus.Starting;
         EventManager.StopListening(MyEvents.EVENT_FIELD_FINISHED, OnFieldFinished);
     }

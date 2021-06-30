@@ -231,7 +231,13 @@ public class HealthPoint : MonoBehaviourLex
     public void DoDeathAfter(float delay)
     {
         wkRoutine = WaitAndKill(delay);
-        StartCoroutine(wkRoutine);
+        if (gameObject.activeInHierarchy)
+        {
+            StartCoroutine(wkRoutine);
+        }
+        else {
+            Debug.LogWarning(gameObject.name + " is inactive and treid start routine");
+        }
     }
 
     [LexRPC]

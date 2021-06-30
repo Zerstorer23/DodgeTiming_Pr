@@ -112,6 +112,9 @@ namespace Lex
         {
             DestroyAll();
             playerDictionary.Clear();
+            CustomProperties.Clear();
+           // LexViewManager.DoReset();
+            NetObjectPool.ResetPool();
             instance.SetConnected(false);
             networkConnector.Disconnect();
         }
@@ -121,8 +124,8 @@ namespace Lex
         public static GameObject Instantiate(string prefabName, Vector3 position, Quaternion quaternion, byte group = 0, object[] parameters = null)
         {
             NetworkInstantiateParameter param = new NetworkInstantiateParameter(LexViewManager.RequestPrivateViewID(), prefabName, LocalPlayer.actorID, LocalPlayer.actorID, false, parameters);
-            LexView lv = NetObjectPool.PollObject(position, quaternion, param);
             instance.Instantiate_Send(position, quaternion, param);
+            LexView lv = NetObjectPool.PollObject(position, quaternion, param);
             return lv.gameObject;
         }
 
@@ -130,8 +133,9 @@ namespace Lex
         public static GameObject InstantiateRoomObject(string prefabName, Vector3 position, Quaternion quaternion, byte group = 0, object[] parameters = null)
         {
             NetworkInstantiateParameter param = new NetworkInstantiateParameter(LexViewManager.RequestRoomViewID(), prefabName, MasterClient.actorID, LocalPlayer.actorID, true, parameters);
+
+            instance.Instantiate_Send(position, quaternion, param); 
             LexView lv = NetObjectPool.PollObject(position, quaternion, param);
-            instance.Instantiate_Send(position, quaternion, param);
             return lv.gameObject;
         }
         #endregion
@@ -162,6 +166,7 @@ namespace Lex
             netMessage.Add(MessageInfo.ServerRequest);
             netMessage.Add(LexRequest.ChangeMasterClient);
             netMessage.Add(masterPlayer);
+            LexDebug.Log(netMessage.PeekSendMessage());
             networkConnector.EnqueueAMessage(netMessage);
             return true;
         }
@@ -192,10 +197,11 @@ namespace Lex
                 return;
             }
             int viewID = lv.ViewID;
+            LexNetworkMessage netMessage = new LexNetworkMessage(LocalPlayer.actorID, (int)MessageInfo.Destroy, viewID);
+            LexDebug.Log(netMessage.PeekSendMessage());
+            networkConnector.EnqueueAMessage(netMessage);
             RemoveBufferedRPCs(lv); //서버 버퍼에서 Instantiate와 모든 RPC제거
             LexViewManager.ReleaseViewID(lv);
-            LexNetworkMessage netMessage = new LexNetworkMessage(LocalPlayer.actorID, (int)MessageInfo.Destroy, viewID);
-            networkConnector.EnqueueAMessage(netMessage);
         }
 
 
@@ -270,19 +276,23 @@ namespace Lex
         {
             var player = GetPlayerByID(uid);
             if (player == null) return;
-            if (useLexNet)
-            {
-                object data = ParserAParameter(typename, (string)value);
-                player.ReceiveBotProperty(key, value);//TODO
-            }
+            object data = ParserAParameter(typename, value.ToString());
+            player.ReceiveBotProperty(key, data);//TODO
         }
 
         private void Awake()
         {
             //  dict.Add("Hi", "A");
             // Debug.Log(dict["Hi"]);
-            DontDestroyOnLoad(gameObject);
-            LexDebug.LogLevel = logLevel;
+            var list = FindObjectsOfType<LexNetwork>();
+            if (list.Length > 1)
+            {
+                GameObject.Destroy(gameObject);
+            }
+            else {
+                DontDestroyOnLoad(gameObject);
+                LexDebug.LogLevel = logLevel;
+            }
         }
       
         private void OnEnable()
@@ -303,13 +313,17 @@ namespace Lex
             {
 
                 myActorID = LocalPlayer.actorID;
-                players = GetPlayerList();
+                players = PlayerList;
             }
         }
         public LexPlayer[] players;
         private void OnApplicationQuit()
         {
             LexNetwork.Disconnect();
+        }
+        private void OnDisable()
+        {
+            Debug.LogWarning("LExManager disable");
         }
     }
     public class NetworkInstantiateParameter{

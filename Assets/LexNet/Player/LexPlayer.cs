@@ -144,17 +144,16 @@ namespace Lex
             CustomProperties.UpdateProperties(lexHash);
             if (IsHuman)
             {
-
-                    LexNetwork.instance.CustomProperty_Send(actorID, lexHash);
-
+                LexNetwork.instance.CustomProperty_Send(actorID, lexHash);
             }
             else
             {
+                ///TODO MEMO entry value getytype
                 if (LexNetwork.IsMasterClient)
                 {
                     foreach (var entry in lexHash.lexHash)
                     {
-                        LexNetwork.instance.lexView.RPC("SetBotProperty", uid,entry.Key,entry.GetType().Name,entry.Value);
+                        LexNetwork.instance.lexView.RPC("SetBotProperty", uid,entry.Key,entry.Value.GetType().Name,entry.Value);
                     }
                 }
             }
@@ -197,12 +196,17 @@ namespace Lex
             }
         }
 
+        /// <summary>
+        /// TODO MEMO
+        /// CUSTOMPROPERTY 먼저 Nickname보다
+        /// </summary>
+        /// <param name="uid"></param>
         public LexPlayer(string uid)
         {
             controllerType = ControllerType.Bot;
             this.botID = uid;
-            NickName = botNames[UnityEngine.Random.Range(0, botNames.Length)];
             CustomProperties = new LexHashTable(this);
+            NickName = botNames[UnityEngine.Random.Range(0, botNames.Length)];
         }
         public LexPlayer() {
             this.IsLocal = true;
@@ -211,7 +215,7 @@ namespace Lex
         }
 
         public LexPlayer Next() {
-            var players = LexNetwork.PlayerList;
+            var players = LexNetwork.HumanPlayerList;
             int i = 0;
             while (i < players.Length && players[i].uid != uid) {
                 i++;

@@ -66,7 +66,7 @@ public class UI_PlayerLobbyManager : MonoBehaviourLex
         Debug.Log("Instantiate after regame");
         if (LexNetwork.IsMasterClient)
         {
-            LexPlayer randomPlayer =  LexNetwork.GetRandomPlayerExceptMe();
+            LexPlayer randomPlayer =  LexNetwork.GetRandomHumanExceptMe();
             if (randomPlayer != null)
                 LexNetwork.SetMasterClient(randomPlayer.actorID);
         }
@@ -128,7 +128,7 @@ public class UI_PlayerLobbyManager : MonoBehaviourLex
         eo.goData.GetComponent<Transform>().SetParent(playerListTransform, false);
         RebalanceTeam();
         UpdateReadyStatus();
-        debugUI();
+        debugUI(); 
     }
 
     public void RebalanceTeam() {

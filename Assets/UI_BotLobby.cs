@@ -85,7 +85,7 @@ public class UI_BotLobby : MonoBehaviourLexCallbacks
         }
         if (LexNetwork.GetBotCount()+1 > maxBots) return;
         string newID = LexNetwork.PollBotID();
-        lexView.RPC("AddBotPlayer",   newID);
+        lexView.RPC("AddBotPlayer", newID);
     }
     public void OnRemoveBot()
     {
@@ -100,20 +100,25 @@ public class UI_BotLobby : MonoBehaviourLexCallbacks
         }
     }
 
-
+    /// <summary>
+    /// TODO MEMO
+    /// Add bot ro list before update hash
+    /// </summary>
+    /// <param name="uid"></param>
     [LexRPC]
     public void AddBotPlayer(string uid)
     {
+        Debug.Log("Add bot player " + uid);
         LexPlayer botPlayer = new LexPlayer(uid);
+        LexNetwork.AddBotPlayer(botPlayer);
         if (LexNetwork.IsMasterClient)
         {
             LexHashTable hash = new LexHashTable();
             hash.Add(Property.RandomSeed, UnityEngine.Random.Range(0, 133));
             hash.Add(Property.Team, (int)Team.HOME);
             hash.Add(Property.Character, (int)CharacterType.NONE);
-            botPlayer.SetCustomProperties(hash); 
+            botPlayer.SetCustomProperties(hash);
         }
-        LexNetwork.AddBotPlayer(botPlayer);
         InstantiateBotPanel(botPlayer);
     }
     
@@ -145,7 +150,6 @@ public class UI_BotLobby : MonoBehaviourLexCallbacks
     {
         if (!LexNetwork.IsMasterClient) return;
         var go = LexNetwork.Instantiate(PREFAB_STARTSCENE_PLAYERNAME, Vector3.zero, Quaternion.identity, 0, new object[] { true, botPlayer.uid });
-
         var info = go.GetComponent<HUD_UserName>();
         botPanels.Add(info);
         string name = botPlayer.NickName;

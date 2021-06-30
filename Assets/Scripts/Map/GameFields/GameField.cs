@@ -229,7 +229,7 @@ public class GameField : MonoBehaviourLex
     public virtual Vector3 GetPlayerSpawnPosition(LexPlayer myPlayer)
     {
         int myIndex = LexNetwork.GetMyIndex(myPlayer, GameFieldManager.GetPlayersInField(fieldNo));
-       Debug.LogWarning(myPlayer+" My Index " + myIndex);
+//       Debug.LogWarning(myPlayer+" My Index " + myIndex);
         int x = myIndex % w;
         int y = myIndex / w;
         return GetPoissonPositionNear(x, y);
@@ -269,7 +269,7 @@ public class GameField : MonoBehaviourLex
             "rand units " + randX + "," + randY + "\n" +
             "start units " + mapSpec.xMin + "," + mapSpec.yMin + "\n" +
             "Indicated location " + location;
-        Debug.Log(outstr);
+//        Debug.Log(outstr);
         return location;
     }
 

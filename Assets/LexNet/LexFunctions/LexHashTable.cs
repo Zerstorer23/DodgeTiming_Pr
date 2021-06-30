@@ -87,5 +87,9 @@
             }
 
         }
+        public void Clear() {
+            lexHash.Clear();
+            
+        }
     }
 }
