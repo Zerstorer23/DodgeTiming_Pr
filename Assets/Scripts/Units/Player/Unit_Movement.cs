@@ -134,12 +134,21 @@ public class Unit_Movement :MonoBehaviourLex
 
     private void EnqueuePosition(Vector3 newPosition)
     {
-        lastVector = newPosition - oldPosition;
-        netTransform.EnqueueLocalPosition(newPosition, Quaternion.identity);
+        if (newPosition != oldPosition)
+        {
+            lastVector = newPosition - oldPosition;
+            netTransform.EnqueueLocalPosition(newPosition, Quaternion.identity);
+            oldPosition = newPosition;
+        }
+        else if (netTransform.positionQueue.Count <= 0)
+        {
+            newPosition = transform.position;
+            netTransform.EnqueueLocalPosition(newPosition, Quaternion.identity);
+        }
         if (!controller.IsBot)
         {
             networkPosIndicator.position = newPosition;
-        }
+        }        
     }
 
     private void MoveByInput(float moveSpeedFinal)

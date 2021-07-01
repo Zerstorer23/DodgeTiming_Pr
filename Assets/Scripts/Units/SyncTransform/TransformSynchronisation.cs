@@ -9,7 +9,7 @@ public class TransformSynchronisation : MonobehaviourLexSerialised
     public double networkExpectedTime;
     public Vector3 networkPos;//ONLY USE FOR PV MINE TODO
     public Quaternion networkQuaternion;
-    Queue<TimeVector> positionQueue = new Queue<TimeVector>();
+    public Queue<TimeVector> positionQueue = new Queue<TimeVector>();
     private double lastSyncTime;
 
     public bool syncRotation = true;
@@ -62,8 +62,10 @@ public class TransformSynchronisation : MonobehaviourLexSerialised
             }
 
         }
-/*        else {
+/*        else
+        {
             //nothing to dequeue, update my position
+
             EnqueueLocalPosition(transform.localPosition, transform.rotation);
         }*/
 
@@ -112,7 +114,7 @@ public class TransformSynchronisation : MonobehaviourLexSerialised
         //통신을 보내는 
         if (IsWriting)
         {
-            if (oldPos != networkPos)
+           // if (oldPos != networkPos)
             {
                 positionQueue.Enqueue(new TimeVector(networkExpectedTime, networkPos, networkQuaternion));
                 stream.SendNext(networkPos);

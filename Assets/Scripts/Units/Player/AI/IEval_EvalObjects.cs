@@ -368,6 +368,7 @@ public partial class IEvaluationMachine
     {
         if (GameSession.gameModeInfo.gameMode != GameMode.TeamCP) return Vector3.zero;
          GameField_CP cpField = (GameField_CP)gameFields[0];
+        
         Map_CapturePoint nearestCP = cpField.cpManager.GetNearestValidPoint(player.myTeam, player.transform.position);
         if (nearestCP == null) return Vector3.zero;
         float distance = Vector2.Distance(player.transform.position, nearestCP.transform.position);

@@ -22,6 +22,7 @@ public class BoxObstacle : MonoBehaviourLex
     private void Awake()
     {
         myCollider = GetComponent<BoxCollider2D>();
+
         pv = GetComponent<LexView>();
     }
 
@@ -31,6 +32,7 @@ public class BoxObstacle : MonoBehaviourLex
     }
     private void OnEnable()
     {
+        
         EventManager.StartListening(MyEvents.EVENT_FIELD_FINISHED, OnGameEnd);
         transform.SetParent(GameSession.GetBulletHome());
         fieldNumber = (int)pv.InstantiationData[0];
@@ -38,11 +40,10 @@ public class BoxObstacle : MonoBehaviourLex
         width = (float)pv.InstantiationData[2];
         this.warnDelay = (float)pv.InstantiationData[3];
         transform.localScale = new Vector3(width, height, 1);
-        StartFadeIn();
-
-
+        StartFadeIn();  
         isDead = false;
         boundarySprite.enabled = true;
+        myCollider.enabled = false;
         EventManager.TriggerEvent(MyEvents.EVENT_BOX_SPAWNED, new EventObject() { goData = gameObject });
 
     }

@@ -54,7 +54,7 @@ public class SkillManager : MonoBehaviourLex
         {
             EventManager.StopListening(MyEvents.EVENT_MY_PROJECTILE_HIT, OnProjectileHit);
             EventManager.StopListening(MyEvents.EVENT_MY_PROJECTILE_MISS, OnProjectileMiss);
-            EventManager.StopListening(MyEvents.EVENT_PLAYER_KILLED_A_PLAYER, OnProjectileHit);
+            EventManager.StopListening(MyEvents.EVENT_PLAYER_KILLED_A_PLAYER, OnPlayerKilledPlayer);
         }
     }
 

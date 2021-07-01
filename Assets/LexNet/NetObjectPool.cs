@@ -43,9 +43,16 @@ public class NetObjectPool : MonoBehaviour
             instance.objectLibrary.Add(tag, new Queue<LexView>());
         }
         go.gameObject.SetActive(false);
+        go.transform.SetParent(prInstance.transform,true);
         go.gameObject.hideFlags = HideFlags.HideInHierarchy;
         instance.objectLibrary[tag].Enqueue(go);
     }
+    /*
+     TODO
+    특이사항
+    부모 tranform안바꾸면 나중에 하위오브젝트가 같이 활성화됨
+
+     */
     public static LexView PollObject(Vector3 position, Quaternion quaternion, NetworkInstantiateParameter param)
     {
         LexView lv;
@@ -68,8 +75,9 @@ public class NetObjectPool : MonoBehaviour
             lv.gameObject.transform.rotation = quaternion;
             lv.SetInformation(param);
             go = lv.gameObject;
-          //  Debug.LogWarning("Poll " + lv.gameObject.name + " / " + lv.gameObject.activeSelf + " / " + lv.ViewID + " / pos "+lv.gameObject.transform.position);
+            //  Debug.LogWarning("Poll " + lv.gameObject.name + " / " + lv.gameObject.activeSelf + " / " + lv.ViewID + " / pos "+lv.gameObject.transform.position);
         }
+        go.transform.SetParent(null, true);
         go.SetActive(true);
         go.hideFlags = HideFlags.None;
         return lv;

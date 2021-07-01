@@ -25,6 +25,7 @@ public class HUD_UserName : MonoBehaviourLex
     }
     private void OnEnable()
     {
+        transform.localScale = Vector3.one;
         EventManager.StartListening(MyEvents.EVENT_GAMEMODE_CHANGED, OnGamemodeChanged);
         playerName = controller.Owner.NickName;
 

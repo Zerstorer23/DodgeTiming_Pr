@@ -38,7 +38,14 @@ public partial class IEvaluationMachine
     }
 
     public void AddFoundObject(int tid, GameObject go) {
-        foundObjects.Add(tid, go);
+        if (foundObjects.ContainsKey(tid))
+        {
+            foundObjects[tid] = go;
+        }
+        else
+        {
+            foundObjects.Add(tid, go);
+        }
     }
     public void RemoveFoundObject(int tid) {
         foundObjects.Remove(tid);

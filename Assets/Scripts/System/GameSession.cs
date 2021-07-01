@@ -120,6 +120,7 @@ public class GameSession : MonoBehaviourLex
     {
         EventManager.TriggerEvent(MyEvents.EVENT_SHOW_PANEL, new EventObject() { objData = ScreenType.PreGame });
         EventManager.TriggerEvent(MyEvents.EVENT_GAME_CYCLE_RESTART, null);
+        LexNetwork.RemoveAllBots();
     }
     [LexRPC]
     public void ResignMaster(int newMaster) {

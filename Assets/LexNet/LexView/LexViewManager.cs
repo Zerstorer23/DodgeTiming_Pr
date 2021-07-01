@@ -24,7 +24,6 @@
         private static Queue<int> roomViewID_queue = new Queue<int>();
 
         private static Mutex viewMutex = new Mutex();
-        static bool init = false;
 
         [SerializeField] int nextPrivate = 0;
         [SerializeField] int nextRoom = 0;
@@ -46,15 +45,12 @@
         {
             Init();
         }
-/*        public static void DoReset() {
-           Init();
-        }*/
+
         private static void Init()
         {
             privateViewID_queue.Clear();
             roomViewID_queue.Clear();
             viewDictionary.Clear();
-            Debug.LogWarning("VC: " + viewDictionary.Count);
             LexView[] sceneViews = Resources.FindObjectsOfTypeAll<LexView>();// FindObjectsOfType<LexView>();
             instance.nextPublicViewID = 0;
             for (int i = 0; i < LexNetwork.MAX_VIEW_IDS; i++)

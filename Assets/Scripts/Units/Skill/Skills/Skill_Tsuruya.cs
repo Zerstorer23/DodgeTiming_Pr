@@ -14,7 +14,7 @@ public class Skill_Tsuruya : ISkill
         float radius = 15f; //5
         float timeStep = 0.25f; //0.25
         int numStep = 6; //10
-        int shootAtOnce = 10;//10
+        int shootAtOnce = 9;//10
         mySkill.SetParam(SkillParams.Duration, timeStep);
         BuffData buff = new BuffData(BuffType.MoveSpeed, -0.2f, timeStep * (numStep));
         mySkill.SetParam(SkillParams.BuffData, buff);

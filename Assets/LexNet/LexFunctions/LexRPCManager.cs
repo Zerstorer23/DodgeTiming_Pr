@@ -23,7 +23,7 @@ namespace Lex
         public void RPC_Receive(int viewID, string functionName, params object[] parameters)
         {
             LexView lv = LexViewManager.GetViewByID(viewID);
-            Debug.LogWarning("RPC " + functionName + " on " + viewID + " / " + lv);
+            LexDebug.Log("RPC " + functionName + " on " + viewID + " / " + lv);
             if (!lv) return;
             Run_RPC(lv, functionName, parameters);
         }

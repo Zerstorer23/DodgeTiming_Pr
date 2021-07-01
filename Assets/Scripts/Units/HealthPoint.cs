@@ -212,7 +212,7 @@ public class HealthPoint : MonoBehaviourLex
                 if (killerUID == null)
                 {
                     killerUID = attackerUserID;
-                    EventManager.TriggerEvent(MyEvents.EVENT_PLAYER_KILLED_A_PLAYER, new EventObject() { stringObj = attackerUserID, hitHealthPoint = this });
+                    EventManager.TriggerEvent(MyEvents.EVENT_PLAYER_KILLED_A_PLAYER, new EventObject() {stringObj = attackerUserID, hitHealthPoint = this });
                     ChatManager.SendNotificationMessage(attackerNickname + " 님이 " + controller.Owner.NickName + "님을 살해했습니다.", "#FF0000");
                 }
             }

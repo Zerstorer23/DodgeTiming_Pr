@@ -7,7 +7,7 @@ public class Projectile_TimedExplosion : MonoBehaviour
     Projectile_DamageDealer damageDealer;
     HealthPoint health;
     public float timeout;
-    float radius = 1f;
+    float radius = 2f;
     //Tsuruya = 0.65
     private void Awake()
     {

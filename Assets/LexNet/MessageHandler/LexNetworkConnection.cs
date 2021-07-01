@@ -13,7 +13,7 @@
 
     public class LexNetworkConnection
     {
-        string ipAddress = "127.0.0.1";
+        string ipAddress = "172.30.1.27";//"127.0.0.1";
         int portNumber = 9000;
         static int BUFFER = 32 * 1024;
         private static Mutex sendMutex = new Mutex();
@@ -43,7 +43,7 @@
                   SocketType.Stream,
                   ProtocolType.Tcp
                   );
-            mySocket.ReceiveBufferSize = 32 * 1024;
+            mySocket.ReceiveBufferSize = BUFFER;
             IPAddress addr = IPAddress.Parse(ipAddress);
             IPEndPoint iep = new IPEndPoint(addr, portNumber);
             try

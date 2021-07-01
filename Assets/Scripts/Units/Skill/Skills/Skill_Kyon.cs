@@ -45,7 +45,9 @@ public class Skill_Kyon : ISkill
     {
         HealthPoint targetHP = eo.hitHealthPoint;
         if (targetHP.unitType != UnitType.Player) return;
-        if (eo.sourceDamageDealer.myHealth.controller.uid != original.controller.uid) return;
+        LexPlayer attacker = LexNetwork.GetPlayerByID(eo.stringObj);
+        if (attacker == null) return;
+        if (attacker.uid != original.controller.uid) return;
         //CheckYasumi(targetHP);
         CharacterType targetChar = targetHP.unitPlayer.myCharacter;
         if (targetChar == CharacterType.KYONKO

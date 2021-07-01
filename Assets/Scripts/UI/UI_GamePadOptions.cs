@@ -11,7 +11,6 @@ public class UI_GamePadOptions : MonoBehaviour
     [SerializeField] Text nowUsingText;
     public static bool useGamepad = false;
     public static PadType padType;
-
     static UI_GamePadOptions instance;
    private void Awake()
     {
