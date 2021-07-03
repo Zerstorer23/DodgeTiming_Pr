@@ -66,7 +66,7 @@
             lastCalculatedPing = Time - lastSentPing;
             double expectedTime = (remoteServerTime + (lastCalculatedPing * 0.5));
             double difference = expectedTime - Time;
-            // Debug.Log("Time diff = " + difference);
+//             Debug.Log("Time diff = " + difference);
             Time = expectedTime;
         }
     }

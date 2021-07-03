@@ -15,7 +15,7 @@ namespace Lex
         {
             LexNetworkMessage netMessage = new LexNetworkMessage(LocalPlayer.actorID, (int)MessageInfo.RPC, lv.ViewID, functionName);
             netMessage.EncodeParameters(parameters);
-            LexDebug.Log(netMessage.PeekSendMessage());
+        //    LexDebug.Log(netMessage.PeekSendMessage());
             networkConnector.EnqueueAMessage(netMessage);
             Run_RPC(lv, functionName, parameters);
         }
@@ -23,7 +23,7 @@ namespace Lex
         public void RPC_Receive(int viewID, string functionName, params object[] parameters)
         {
             LexView lv = LexViewManager.GetViewByID(viewID);
-            LexDebug.Log("RPC " + functionName + " on " + viewID + " / " + lv);
+            LexDebug.LogIn("RPC " + functionName + " on " + viewID + " / " + lv);
             if (!lv) return;
             Run_RPC(lv, functionName, parameters);
         }

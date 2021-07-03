@@ -13,9 +13,10 @@
 
     public class LexNetworkConnection
     {
-        string ipAddress = "172.30.1.27";//"127.0.0.1";
+       // string ipAddress = "172.30.1.27";
+        string ipAddress = "127.0.0.1";
         int portNumber = 9000;
-        static int BUFFER = 32 * 1024;
+        static int BUFFER = 128 * 1024;//32
         private static Mutex sendMutex = new Mutex();
         private static Mutex receiveMutex = new Mutex();
 
@@ -73,6 +74,7 @@
         {//ㅁㄴㅇㄹㄴ ㅎㅇㅀㅇㅀ
          //program1-
          //[20길]3#3#3#123123ㄹ3//20
+
             while (stayConnected)
             {
                 //MUTEX
@@ -116,6 +118,7 @@
         {
             try
             {
+                LexDebug.LogIn(str);
                 byte[] byData = Encoding.UTF8.GetBytes(str);// + '\0');
 //                Debug.LogWarning(byData.Length+" / "+str);
                 mySocket.Send(byData);
@@ -176,9 +179,13 @@
             while (receivedQueue.Count > 0)
             {
                 string message = receivedQueue.Dequeue();
-             
+                LexDebug.LogOut(message);
+
                 messageHandler.HandleMessage(message);//
             }//분리하는게 좋을ㄷㅡㅅ
+            /*
+ Instantiate가 안들어와!!! 뭐야!! TODOs
+ */
             receiveMutex.ReleaseMutex();
         }
 

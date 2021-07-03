@@ -506,6 +506,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8116256741856058408, guid: c41f6fe35e198224481dcd67dba2f4de,
         type: 3}
+      propertyPath: logIn
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8116256741856058408, guid: c41f6fe35e198224481dcd67dba2f4de,
+        type: 3}
+      propertyPath: logOut
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8116256741856058408, guid: c41f6fe35e198224481dcd67dba2f4de,
+        type: 3}
       propertyPath: logLevel
       value: 2
       objectReference: {fileID: 0}

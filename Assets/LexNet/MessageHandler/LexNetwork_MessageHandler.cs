@@ -17,13 +17,12 @@
             netMessage.Split(str);
             while (netMessage.HasNext())
             {
-
                 string signature = netMessage.GetNext();
                 bool isMyPacket = (signature == NET_SIG);
                 if (!isMyPacket) continue;
               try
                 {
-                 //   Debug.LogWarning("처리중: " + netMessage.Peek());
+                   // LexDebug.LogOut("처리중: " + netMessage.Peek());
                     int lengthOfMessages = Int32.Parse(netMessage.GetNext());
                     int sentActorNumber = Int32.Parse(netMessage.GetNext());
                     MessageInfo messageInfo = (MessageInfo)Int32.Parse(netMessage.GetNext());
@@ -123,6 +122,7 @@
             {
                 iparam = ParseParametersByString(numParams, netMessage);
             }
+            LexDebug.LogIn(string.Format("Instantiate {0}(id:{3}) at {1} by {2}", prefabName, position, ownerID, targetViewID));
             NetworkInstantiateParameter netParam = new NetworkInstantiateParameter(targetViewID, prefabName, ownerID, sentActorNumber, isRoomView, iparam);
             NetObjectPool.PollObject(position, quaternion, netParam);
             //Params

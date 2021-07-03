@@ -19,6 +19,8 @@ namespace Lex
         public static string ServerAddress;
         public static bool connected;
         public LexLogLevel logLevel;
+        public bool logOut;
+        public bool logIn;
         public static LexNetworkConnection networkConnector = new LexNetworkConnection();
         private static LexNetwork prNetwork;
         [SerializeField] [ReadOnly] bool amMaster;
@@ -166,7 +168,7 @@ namespace Lex
             netMessage.Add(MessageInfo.ServerRequest);
             netMessage.Add(LexRequest.ChangeMasterClient);
             netMessage.Add(masterPlayer);
-            LexDebug.Log(netMessage.PeekSendMessage());
+           // LexDebug.Log(netMessage.PeekSendMessage());
             networkConnector.EnqueueAMessage(netMessage);
             return true;
         }
@@ -198,7 +200,7 @@ namespace Lex
             }
             int viewID = lv.ViewID;
             LexNetworkMessage netMessage = new LexNetworkMessage(LocalPlayer.actorID, (int)MessageInfo.Destroy, viewID);
-            LexDebug.Log(netMessage.PeekSendMessage());
+          
             networkConnector.EnqueueAMessage(netMessage);
             RemoveBufferedRPCs(lv); //서버 버퍼에서 Instantiate와 모든 RPC제거
             LexViewManager.ReleaseViewID(lv);
@@ -291,7 +293,6 @@ namespace Lex
             }
             else {
                 DontDestroyOnLoad(gameObject);
-                LexDebug.LogLevel = logLevel;
             }
         }
       
@@ -305,6 +306,9 @@ namespace Lex
         {
             Time += UnityEngine.Time.deltaTime;
             networkConnector.DequeueReceivedBuffer();
+            LexDebug.LogLevel = logLevel;
+            LexDebug.logIn = logIn;
+            LexDebug.logOut = logOut;
         }
         private void FixedUpdate()
         {
