@@ -122,7 +122,7 @@
             {
                 iparam = ParseParametersByString(numParams, netMessage);
             }
-            LexDebug.LogIn(string.Format("Instantiate {0}(id:{3}) at {1} by {2}", prefabName, position, ownerID, targetViewID));
+            LexDebug.LogReceived(string.Format("Instantiate {0}(id:{3}) at {1} by {2}", prefabName, position, ownerID, targetViewID));
             NetworkInstantiateParameter netParam = new NetworkInstantiateParameter(targetViewID, prefabName, ownerID, sentActorNumber, isRoomView, iparam);
             NetObjectPool.PollObject(position, quaternion, netParam);
             //Params

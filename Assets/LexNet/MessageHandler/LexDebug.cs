@@ -26,14 +26,14 @@ namespace Lex
             if (LogLevel >= LexLogLevel.Error)
                 Debug.LogError("<color=#c80000>" + msg + "</color>");
         }
-        public static void LogIn(string msg)
+        public static void LogSend(string msg)
         {
             if (logIn)
             {
-                Debug.Log("보냄: <color=#00c800>" + msg + "</color>");
+                Debug.Log("보냄: <color=#0000c8>" + msg + "</color>");
             }
         }
-        public static void LogOut(string msg)
+        public static void LogReceived(string msg)
         {
             if (logOut)
             {

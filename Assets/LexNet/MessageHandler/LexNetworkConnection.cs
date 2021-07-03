@@ -118,7 +118,7 @@
         {
             try
             {
-                LexDebug.LogIn(str);
+                LexDebug.LogSend(str);
                 byte[] byData = Encoding.UTF8.GetBytes(str);// + '\0');
 //                Debug.LogWarning(byData.Length+" / "+str);
                 mySocket.Send(byData);
@@ -150,7 +150,8 @@
                     return;
                 }
                 string str = Encoding.UTF8.GetString(packet, 0, received);
-             //   Debug.Log("string length " + str.Length);
+                Debug.Log("string length " + str.Length);
+                LexDebug.LogReceived(str);
              //   LexNetwork.PrintStringToCode(str);
                 receiveMutex.WaitOne();
                // Debug.LogWarning("Received <color=#00c800>" + str + "</color>");
@@ -179,8 +180,7 @@
             while (receivedQueue.Count > 0)
             {
                 string message = receivedQueue.Dequeue();
-                LexDebug.LogOut(message);
-
+            //    LexDebug.LogReceived(message);
                 messageHandler.HandleMessage(message);//
             }//분리하는게 좋을ㄷㅡㅅ
             /*
