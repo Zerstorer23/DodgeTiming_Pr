@@ -269,7 +269,6 @@ MonoBehaviour:
     actorID: 0
   ownerActorNr: 0
   creatorActorNr: 0
-  serializedView: {fileID: 0}
 --- !u!114 &8629071319047820328
 MonoBehaviour:
   m_ObjectHideFlags: 0

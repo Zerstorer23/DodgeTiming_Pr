@@ -126,6 +126,7 @@ MonoBehaviour:
   networkPos: {x: 0, y: 0, z: 0}
   networkQuaternion: {x: 0, y: 0, z: 0, w: 0}
   syncRotation: 1
+  xDelta: 0
 --- !u!114 &-8895642817908627982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,7 +200,6 @@ MonoBehaviour:
     actorID: 0
   ownerActorNr: 0
   creatorActorNr: 0
-  serializedView: {fileID: 0}
 --- !u!1 &8629071319339072154
 GameObject:
   m_ObjectHideFlags: 0

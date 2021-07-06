@@ -42,6 +42,16 @@ public class UI_PlayerLobbyManager : MonoBehaviourLex
         {
             playerHash.Add(Property.Character, CharacterType.NONE);
             LexNetwork.LocalPlayer.SetCustomProperties(playerHash);
+            LexNetwork.SendChat("2014년 10월 14일, 배우 김사은과 12월 13일에 결혼한다고 발표했다. 김사은 측에서는 부인했지만 성민 본인이 직접 공식.");
+                        LexNetwork.LocalPlayer.SetCustomProperties(playerHash);
+            LexNetwork.SendChat("초기에는 아이돌이 결혼하다고 하자 팬들이 분노한다는 점이 부각되어서 연예인은 결혼할 자유도 없냐면서 논란이 시작되었다.");
+                        LexNetwork.LocalPlayer.SetCustomProperties(playerHash);
+            LexNetwork.SendChat("성민이 비판받는 이유를 요약하면 가장 큰 이유로 성민 본인이 슈퍼주니어 그룹 활동을 전혀 배려하지 않고 이기적으로 행동했다는 것과 두 번째로 이런 무책임");
+                        LexNetwork.LocalPlayer.SetCustomProperties(playerHash);
+            LexNetwork.SendChat("한 처사에 팬들이 항의하자 이제까지 팬덤 덕에 유명해지고 인기를 얻은 아이돌이 오랫동안 자신을 지지해 준 팬들을 한순간에 안티.");
+                        LexNetwork.LocalPlayer.SetCustomProperties(playerHash);
+            LexNetwork.SendChat("성민이 김사은과 연애를 하고 있던 것은 팬들이라면 대부분 알고 있었던 사실로, 팬들도 다들 알지만 그룹을 위해 쉬쉬하는 분위기였다.");
+
             Debug.Log("Instantiate after connection");
             InstantiateMyself();
             UpdateReadyStatus();
