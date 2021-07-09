@@ -14,9 +14,10 @@ namespace Lex
             NetworkEventManager.StartListening(LexCallback.HashChanged, OnHashChanged);
             NetworkEventManager.StartListening(LexCallback.Disconnected, OnDisconnected);
             NetworkEventManager.StartListening(LexCallback.ChatReceived, OnChatReceived);
+            NetworkEventManager.StartListening(LexCallback.DB_Received, OnDBReceived);
         }
 
-  
+
 
         private void OnDisable()
         {
@@ -27,6 +28,7 @@ namespace Lex
             NetworkEventManager.StopListening(LexCallback.Disconnected, OnDisconnected);
             NetworkEventManager.StopListening(LexCallback.HashChanged, OnHashChanged);
             NetworkEventManager.StopListening(LexCallback.ChatReceived, OnChatReceived);
+            NetworkEventManager.StopListening(LexCallback.DB_Received, OnDBReceived);
         }
         private void OnDisconnected(NetEventObject arg0)
         {
@@ -66,7 +68,14 @@ namespace Lex
         {
             OnChatReceived(arg0.stringObj);
         }
+        private void OnDBReceived(NetEventObject arg0)
+        {
+            OnDBReceived(arg0.stringObj, arg0.objData);
+        }
+        public virtual void OnDBReceived(string receivedKey, object receivedValue)
+        {
 
+        }
         public virtual void OnChatReceived(string message) { 
         
         }

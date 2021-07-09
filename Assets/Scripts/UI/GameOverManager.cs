@@ -157,7 +157,7 @@ public class GameOverManager : MonoBehaviour
     {
         if (Application.platform != RuntimePlatform.Android) yield break;
 #if UNITY_ANDROID
-        string localID = LexNetwork.LocalPlayer.UserId;
+        string localID = LexNetwork.LocalPlayer.uid;
         int kills = StatisticsManager.GetStat(StatTypes.KILL, localID);
         int evades = StatisticsManager.GetStat(StatTypes.EVADE, localID);
         float highestScore = StatisticsManager.GetStat(StatTypes.SCORE, localID);

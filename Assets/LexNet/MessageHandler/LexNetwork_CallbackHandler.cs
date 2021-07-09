@@ -10,9 +10,7 @@
         public void ParseCallback(int sentActorNumber, LexNetworkMessage netMessage)
         {
             //actorID , MessageInfo , callbackType, params
-            string cbt = netMessage.GetNext();
-            int cbtNum = Int32.Parse(cbt);
-            LexCallback callbackType = (LexCallback)cbtNum;
+            LexCallback callbackType = (LexCallback)netMessage.GetNextInt();
             switch (callbackType)
             {
                 case LexCallback.PlayerJoined:
@@ -38,6 +36,10 @@
                     break;
                 case LexCallback.Disconnected:
                     Handle_ConnectionLost();
+                    break;
+                case LexCallback.DB_Received:
+                    Debug.Log("Receive DB");
+                    LexNetwork.DBManager.HandleDBReceive(netMessage);
                     break;
             }
 

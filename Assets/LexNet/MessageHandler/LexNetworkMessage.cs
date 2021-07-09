@@ -125,6 +125,10 @@ namespace Lex
         {
             return receivedQueue.Dequeue();
         }
+        public int GetNextInt()
+        {
+            return Int32.Parse(GetNext());
+        }
         public int GetReceivedSize()
         {
             return receivedQueue.Count;
@@ -152,57 +156,7 @@ namespace Lex
             }
             return paramQueue.Count + " / " + msg;
         }
-        public void PrintOut(MessageInfo messageInfo) {
-           // Debug.LogWarning(Peek());
-            try
-            {
-                int i = 0;
-                string[] list = receivedQueue.ToArray();
-                string outstr = messageInfo+" - ";
-                string viewid;
-                switch (messageInfo)
-                {
-                    case MessageInfo.RPC:
-                        viewid = list[i++];
-                        string functionName = list[i++];
-                        outstr += " " + functionName + " on " + viewid;
-                        break;
-                    case MessageInfo.SyncVar:
-                        viewid = list[i++];
-                        outstr += " on " + viewid;
-                        return;
-                    case MessageInfo.Chat:
-                        outstr += " says " + list[i++];
-                        break;
-                    case MessageInfo.Instantiate:
-                        viewid = list[i++];// Int32.Parse(netMessage.GetNext());
-                        i++;
-                        string prefabName = list[i++];
-                        i++;
-                        string position = list[i++];
-                        i++;
-                        outstr += string.Format(" {0}({1}) at {2}", prefabName, viewid, position);
-                        break;
-                    case MessageInfo.Destroy:
-                        viewid = list[i++];
-                        outstr += " " + viewid;
-                        break;
-                    case MessageInfo.SetHash:
-                        break;
-                    case MessageInfo.ServerRequest:
-                        break;
-                    case MessageInfo.ServerCallbacks:
-                        string callback = PrintCallback(list, i);
-                        outstr += callback;
-                        if (callback == null) return;
-                        break;
-                }
-                LexDebug.Log(outstr);
-            }
-            catch (Exception e) {
-                Debug.LogWarning(e);
-            }
-        }
+
         string PrintCallback(string[] list, int i)
         {
             int cbtNum = Int32.Parse(list[i++]);
@@ -224,11 +178,21 @@ namespace Lex
         HashChanged,
         Disconnected,
         ModifyServerTime,
-        RoomInformationReceived
-            , Ping_Received,ChatReceived
+        RoomInformationReceived,
+        Ping_Received,
+        ChatReceived,
+        DB_Received
     }
     public enum LexRequest
     {
-        None, RemoveRPC, ChangeMasterClient, Receive_modifiedTime, Ping
+        None, RemoveRPC, ChangeMasterClient, Receive_modifiedTime, Ping, DBReference
     }
+    public enum LexDBcode { 
+      LogIn,Set,Append,Get,SQL
+    }
+    public enum LexDBTable
+    {
+        Statistics,Events,Achievements,Leaderboards
+    }
+
 }

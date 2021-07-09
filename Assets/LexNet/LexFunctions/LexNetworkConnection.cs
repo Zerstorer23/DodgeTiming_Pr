@@ -14,7 +14,7 @@
     public class LexNetworkConnection
     {
        // string ipAddress = "172.30.1.27";
-        string ipAddress = "127.0.0.1";
+       public string ipAddress = "127.0.0.1";
         int portNumber = 9000;
         static int BUFFER = 128 * 1024;//32
         private static Mutex sendMutex = new Mutex();
@@ -150,11 +150,9 @@
                     return;
                 }
                 string str = Encoding.UTF8.GetString(packet, 0, received);
-                Debug.Log("string length " + str.Length);
-                LexDebug.LogReceived(str);
-             //   LexNetwork.PrintStringToCode(str);
+
+//                LexDebug.LogReceived(str);
                 receiveMutex.WaitOne();
-               // Debug.LogWarning("Received <color=#00c800>" + str + "</color>");
                 receivedQueue.Enqueue(str);
                 receiveMutex.ReleaseMutex();
                 // Debug.Log(receivedQueue.Count + "/ 수신한 메시지:" + str);
@@ -180,7 +178,7 @@
             while (receivedQueue.Count > 0)
             {
                 string message = receivedQueue.Dequeue();
-            //    LexDebug.LogReceived(message);
+                LexDebug.LogReceived(message);
                 messageHandler.HandleMessage(message);//
             }//분리하는게 좋을ㄷㅡㅅ
             /*

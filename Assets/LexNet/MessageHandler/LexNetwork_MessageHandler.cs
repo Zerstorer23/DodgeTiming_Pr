@@ -19,14 +19,17 @@
             {
                 string signature = netMessage.GetNext();
                 bool isMyPacket = (signature == NET_SIG);
-                if (!isMyPacket) continue;
+                if (!isMyPacket) {
+                    LexDebug.LogWarning("Skip "+signature +" / "+ str);
+                    continue;
+                };
               try
                 {
-                   // LexDebug.LogOut("처리중: " + netMessage.Peek());
+                    LexDebug.LogReceived("처리중: " + netMessage.Peek());
                     int lengthOfMessages = Int32.Parse(netMessage.GetNext());
                     int sentActorNumber = Int32.Parse(netMessage.GetNext());
                     MessageInfo messageInfo = (MessageInfo)Int32.Parse(netMessage.GetNext());
-                    netMessage.PrintOut(messageInfo);
+                    LexDebug.LogWarning("messageInfo: " + messageInfo);
                     switch (messageInfo)
                     {
                         case MessageInfo.RPC:

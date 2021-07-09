@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using static Lex.LexNetwork_MessageHandler;
 
 
@@ -19,9 +20,10 @@ namespace Lex
         public static string ServerAddress;
         public static bool connected;
         public LexLogLevel logLevel;
-        public bool logOut;
-        public bool logIn;
+        public bool logSend;
+        public bool logReceive;
         public static LexNetworkConnection networkConnector = new LexNetworkConnection();
+        internal static LexDBManager DBManager = new LexDBManager();
         private static LexNetwork prNetwork;
         [SerializeField] [ReadOnly] bool amMaster;
         [SerializeField] [ReadOnly] int myActorID;
@@ -115,7 +117,7 @@ namespace Lex
             DestroyAll();
             playerDictionary.Clear();
             CustomProperties.Clear();
-           // LexViewManager.DoReset();
+            // LexViewManager.DoReset();
             NetObjectPool.ResetPool();
             instance.SetConnected(false);
             networkConnector.Disconnect();
@@ -136,7 +138,7 @@ namespace Lex
         {
             NetworkInstantiateParameter param = new NetworkInstantiateParameter(LexViewManager.RequestRoomViewID(), prefabName, MasterClient.actorID, LocalPlayer.actorID, true, parameters);
 
-            instance.Instantiate_Send(position, quaternion, param); 
+            instance.Instantiate_Send(position, quaternion, param);
             LexView lv = NetObjectPool.PollObject(position, quaternion, param);
             return lv.gameObject;
         }
@@ -168,7 +170,7 @@ namespace Lex
             netMessage.Add(MessageInfo.ServerRequest);
             netMessage.Add(LexRequest.ChangeMasterClient);
             netMessage.Add(masterPlayer);
-           // LexDebug.Log(netMessage.PeekSendMessage());
+            // LexDebug.Log(netMessage.PeekSendMessage());
             networkConnector.EnqueueAMessage(netMessage);
             return true;
         }
@@ -176,14 +178,16 @@ namespace Lex
         public static void Destroy(GameObject gameObject)
         {
             var lv = gameObject.GetComponent<LexView>();
-            if (lv == null) {
+            if (lv == null)
+            {
                 Debug.LogWarning("No View in " + gameObject.name);
                 return;
             }
             Destroy(lv);
         }
-        public static void Destroy(int viewID){
-           var lv = LexViewManager.GetViewByID(viewID);
+        public static void Destroy(int viewID)
+        {
+            var lv = LexViewManager.GetViewByID(viewID);
             if (lv == null)
             {
                 Debug.LogWarning("No such ViewID " + viewID);
@@ -192,7 +196,8 @@ namespace Lex
             Destroy(lv);
         }
 
-        public static void Destroy(LexView lv) {
+        public static void Destroy(LexView lv)
+        {
             if (!lv.IsMine && !IsMasterClient)
             {
                 Debug.LogWarning(lv.ViewID + " is not mine! ");
@@ -200,7 +205,7 @@ namespace Lex
             }
             int viewID = lv.ViewID;
             LexNetworkMessage netMessage = new LexNetworkMessage(LocalPlayer.actorID, (int)MessageInfo.Destroy, viewID);
-          
+
             networkConnector.EnqueueAMessage(netMessage);
             RemoveBufferedRPCs(lv); //서버 버퍼에서 Instantiate와 모든 RPC제거
             LexViewManager.ReleaseViewID(lv);
@@ -262,14 +267,14 @@ namespace Lex
             //Needs to be synced with server
             //server needs to keep all hash settings
             instance.CustomProperty_Send(0, hash);
-            NetworkEventManager.TriggerEvent(LexCallback.HashChanged, new NetEventObject() {stringObj="0", objData = hash });
+            NetworkEventManager.TriggerEvent(LexCallback.HashChanged, new NetEventObject() { stringObj = "0", objData = hash });
         }
 
 
         public static void SetPlayerCustomProperties(LexHashTable hash)
         {
             LocalPlayer.SetCustomProperties(hash);
-            NetworkEventManager.TriggerEvent(LexCallback.HashChanged, new NetEventObject() {stringObj=LocalPlayer.uid, objData = hash });
+            NetworkEventManager.TriggerEvent(LexCallback.HashChanged, new NetEventObject() { stringObj = LocalPlayer.uid, objData = hash });
         }
 
 
@@ -291,24 +296,25 @@ namespace Lex
             {
                 GameObject.Destroy(gameObject);
             }
-            else {
+            else
+            {
                 DontDestroyOnLoad(gameObject);
             }
         }
-      
+
         private void OnEnable()
         {
             DoTimeStartUp();
         }
-      
+
 
         private void Update()
         {
             Time += UnityEngine.Time.deltaTime;
             networkConnector.DequeueReceivedBuffer();
             LexDebug.LogLevel = logLevel;
-            LexDebug.logIn = logIn;
-            LexDebug.logOut = logOut;
+            LexDebug.logSend = logSend;
+            LexDebug.logReceive = logReceive;
         }
         private void FixedUpdate()
         {
@@ -327,17 +333,20 @@ namespace Lex
         }
         private void OnDisable()
         {
-            Debug.LogWarning("LExManager disable");
+            Debug.LogWarning("LexManager disable");
         }
+    
     }
-    public class NetworkInstantiateParameter{
-       internal int viewID;
+    public class NetworkInstantiateParameter
+    {
+        internal int viewID;
         internal string prefabName;
         internal int ownerID;
-      internal  int creatorID;
-      internal  bool isRoomView;
-      internal  object[] data;
-        public NetworkInstantiateParameter(int view,string name, int owner, int creator, bool isRoom, object[] param) {
+        internal int creatorID;
+        internal bool isRoomView;
+        internal object[] data;
+        public NetworkInstantiateParameter(int view, string name, int owner, int creator, bool isRoom, object[] param)
+        {
             this.viewID = view;
             this.ownerID = owner;
             this.prefabName = name;

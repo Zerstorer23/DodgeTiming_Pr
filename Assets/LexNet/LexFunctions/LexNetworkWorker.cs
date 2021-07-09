@@ -162,7 +162,6 @@ namespace Lex
                 entry.UpdateOwnership();
             }
         }
-      
         internal void SetConnected(bool v)
         {
             Debug.Log("Connected : " + v);
