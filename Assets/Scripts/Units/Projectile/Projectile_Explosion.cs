@@ -24,6 +24,7 @@ public class Projectile_Explosion : MonoBehaviourLex
     }
     void HandleCollision(GameObject go)
     {
+        if (!damageDealer.myHealth.lexView.IsMine) return;
         string tag = go.tag;
         switch (tag)
         {

@@ -14,7 +14,7 @@
     public class LexNetworkConnection
     {
        // string ipAddress = "172.30.1.27";
-       public string ipAddress = "127.0.0.1";
+       public string ipAddress = "172.30.1.27";
         int portNumber = 9000;
         static int BUFFER = 128 * 1024;//32
         private static Mutex sendMutex = new Mutex();
@@ -78,7 +78,7 @@
             while (stayConnected)
             {
                 //MUTEX
-                sendMutex.WaitOne();
+                WaitMutex(sendMutex);
                 while (sendQueue.Count > 0 && stayConnected)
                 {
                     string message =  MergeMessages();//sendQueue.Dequeue().Build();//
@@ -93,7 +93,7 @@
         public void EnqueueAMessage(LexNetworkMessage netMessage)
         {
             //MUTEX
-            sendMutex.WaitOne();
+            WaitMutex(sendMutex);
             sendQueue.Enqueue(netMessage);
             sendMutex.ReleaseMutex();
             //MUTEX
@@ -144,15 +144,15 @@
                     Debug.LogWarning(e.Message);
                     Debug.LogWarning(e.StackTrace);
                     stayConnected = false;
-                    receiveMutex.WaitOne();
+                    WaitMutex(receiveMutex);
                     receivedQueue.Enqueue(FlagDisconnected());
                     receiveMutex.ReleaseMutex();
                     return;
                 }
                 string str = Encoding.UTF8.GetString(packet, 0, received);
 
-//                LexDebug.LogReceived(str);
-                receiveMutex.WaitOne();
+                //                LexDebug.LogReceived(str);
+                WaitMutex(receiveMutex);
                 receivedQueue.Enqueue(str);
                 receiveMutex.ReleaseMutex();
                 // Debug.Log(receivedQueue.Count + "/ 수신한 메시지:" + str);
@@ -174,16 +174,13 @@
         public void DequeueReceivedBuffer()
         {
             //mutex
-            receiveMutex.WaitOne();
+            WaitMutex(receiveMutex);
             while (receivedQueue.Count > 0)
             {
                 string message = receivedQueue.Dequeue();
                 LexDebug.LogReceived(message);
                 messageHandler.HandleMessage(message);//
             }//분리하는게 좋을ㄷㅡㅅ
-            /*
- Instantiate가 안들어와!!! 뭐야!! TODOs
- */
             receiveMutex.ReleaseMutex();
         }
 
@@ -201,7 +198,16 @@
             }
         }
 
-
+        public bool WaitMutex(Mutex m) {
+            var timePrev = DateTime.Now.Ticks;
+            bool res = m.WaitOne(5000);
+            var timeNext = DateTime.Now.Ticks;
+            var mills = (timeNext - timePrev) /  TimeSpan.TicksPerMillisecond;
+            if (mills > 1000) {
+                Debug.LogError(mills);
+            }
+            return res;
+        }
     }
 
 

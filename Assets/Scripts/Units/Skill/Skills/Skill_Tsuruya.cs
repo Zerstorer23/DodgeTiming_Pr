@@ -11,10 +11,10 @@ public class Skill_Tsuruya : ISkill
         mySkill.SetParam(SkillParams.PrefabName, PREFAB_BULLET_TSURUYA);
         mySkill.SetParam(SkillParams.Quarternion, Quaternion.identity);
         mySkill.SetParam(SkillParams.ReactionType, ReactionType.None);
-        float radius = 15f; //5
-        float timeStep = 0.25f; //0.25
+        float radius = 12f;
+        float timeStep = 0.33f;
         int numStep = 6; //10
-        int shootAtOnce = 9;//10
+        int shootAtOnce = 8;//10
         mySkill.SetParam(SkillParams.Duration, timeStep);
         BuffData buff = new BuffData(BuffType.MoveSpeed, -0.2f, timeStep * (numStep));
         mySkill.SetParam(SkillParams.BuffData, buff);

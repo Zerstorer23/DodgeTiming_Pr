@@ -25,11 +25,9 @@
                 };
               try
                 {
-                    LexDebug.LogReceived("처리중: " + netMessage.Peek());
                     int lengthOfMessages = Int32.Parse(netMessage.GetNext());
                     int sentActorNumber = Int32.Parse(netMessage.GetNext());
                     MessageInfo messageInfo = (MessageInfo)Int32.Parse(netMessage.GetNext());
-                    LexDebug.LogWarning("messageInfo: " + messageInfo);
                     switch (messageInfo)
                     {
                         case MessageInfo.RPC:

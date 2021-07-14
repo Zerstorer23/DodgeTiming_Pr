@@ -54,12 +54,12 @@ namespace Lex
         public string Build()
         {
             int count = paramQueue.Count + 2;/// signature and size 
-            string message = NET_SIG + NET_DELIM + count;
+            string message =  NET_SIG + NET_DELIM + count;
             foreach (object s in paramQueue)
             {
                 message += NET_DELIM + s.ToString();
             }
-            return message + NET_DELIM;
+            return message+ NET_DELIM ;
             //3#hello
             //2#hello
 
@@ -117,7 +117,8 @@ namespace Lex
             string[] tokens = message.Split('#');
             foreach (string s in tokens)
             {
-                // Debug.Log(receivedQueue.Count+" : "+ s);
+                if (string.IsNullOrEmpty(s)) continue;
+               // Debug.Log(receivedQueue.Count+" : "+ s);
                 receivedQueue.Enqueue(s);
             }
         }
